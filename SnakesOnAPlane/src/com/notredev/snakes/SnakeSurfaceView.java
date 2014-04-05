@@ -18,14 +18,24 @@ import android.view.SurfaceView;
  */
 public class SnakeSurfaceView extends SurfaceView implements Runnable {
 
-	private static final String TAG = "derp";
+	private static final String TAG = "IM SICK AND TIRED OF THESE MUTHA FUCKIN SNAKES ON THIS MUTHA FUCKIN PLANES";
     private volatile boolean running = false;
 
     private Thread thread = null;
     private SurfaceHolder surfaceHolder;
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Firebase mFirebaseRoot;
+        
+    // Store an X,Y out-of-boundary defaults for each of the 4 players
+    int x[] = new int[] {-1, -1, -1, -1};
+    int y[] = new int[] {-1, -1, -1, -1};
+    int canvasWidth;
+    int canvasHeight;
 
+    // Define a color for each player
+    int colors[] = new int[] {Color.RED, Color.GREEN, Color.YELLOW, Color.MAGENTA};
+    
+    
     /*
      * Constructor
      */
@@ -62,120 +72,97 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
         }
     }
 
+    
+    public void update(){
+        if (!surfaceHolder.getSurface().isValid()) {
+        	return;
+        }
+
+        //Update the actors
+        
+        //Update the gameboard
+        
+        // Iterate through all players
+        for (int n = 0; n < GameController.MAX_PLAYERS; n++) {
+            GameController gameController = null;
+            try {
+                gameController = GameController.getControllerByPlayer(n + 1);
+            }
+            catch (PlayerNumberNotFoundException e) {
+            }
+
+            // If the cursor went out of the screen boundaries
+            if ((x[n] < 0) | (y[n] < 0) | (x[n] > canvasWidth) | (y[n] > canvasHeight)) {
+                // Reset cursors proportionally on a horizontally centered line
+                x[n] = canvasWidth / (GameController.MAX_PLAYERS + 1) * (n + 1);
+                y[n] = canvasHeight / 2;
+            }
+
+            if (gameController != null) {
+                // Move the cursor proportionally to the stick angle
+                float deltaX = gameController.getAxisValue(GameController.AXIS_STICK_LEFT_X);
+                float deltaY = gameController.getAxisValue(GameController.AXIS_STICK_LEFT_Y);
+                
+                // stick angle is greater than the center dead zone
+                if ((deltaX * deltaX + deltaY * deltaY) > GameController.DEAD_ZONE * GameController.DEAD_ZONE) {
+                    x[n] += Math.round(deltaX * 10);
+                    y[n] += Math.round(deltaY * 10);
+                }
+
+                // Move the cursor function of the DPAD direction
+                x[n] += gameController
+                                .isButtonPressed(GameController.BUTTON_DPAD_RIGHT) ? +5
+                                : 0;
+                x[n] += gameController
+                                .isButtonPressed(GameController.BUTTON_DPAD_LEFT) ? -5
+                                : 0;
+                y[n] += gameController
+                                .isButtonPressed(GameController.BUTTON_DPAD_DOWN) ? +5
+                                : 0;
+                y[n] += gameController
+                                .isButtonPressed(GameController.BUTTON_DPAD_UP) ? -5
+                                : 0;
+                final String xVal = Integer.toString(x[n]);
+                final String yVal = Integer.toString(y[n]);
+                mFirebaseRoot.child(xVal + ":" + yVal).setValue(true);
+            }
+        }
+    }
+    
+    public void draw(){
+        Canvas canvas = surfaceHolder.lockCanvas();
+        canvasWidth = canvas.getWidth();
+        canvasHeight = canvas.getHeight();
+        
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(8);
+        
+        canvas.drawColor(Color.BLACK);
+
+        for (int n = 0; n < GameController.MAX_PLAYERS; n++) {
+
+	        // Draw a spot for that player
+	        paint.setColor(colors[n]);
+	        canvas.drawPoint(x[n], y[n], paint);
+	        canvas.drawCircle(x[n], y[n], 20, paint);
+        }
+        
+        // Now pass over to the GPU for rendering.
+        GameController.startFrame();
+        surfaceHolder.unlockCanvasAndPost(canvas);
+    }
+    
     /*
-     * This is the core drawing thread that demonstrates the user of
-     * GameController(non-Javadoc)
-     * 
-     * @see java.lang.Runnable#run()
+     * This runs
      */
     @Override
     public void run() {
-
-        // Store an X,Y out-of-boundary defaults for each of the 4 players
-        int x[] = new int[] {
-                -1, -1, -1, -1
-        };
-        int y[] = new int[] {
-                -1, -1, -1, -1
-        };
-
-        // Define a color for each player
-        int colors[] = new int[] {
-                Color.RED, Color.GREEN, Color.YELLOW, Color.MAGENTA
-        };
-
-        while (running) {
-
-            if (surfaceHolder.getSurface().isValid()) {
-
-                Canvas canvas = surfaceHolder.lockCanvas();
-                canvas.drawColor(Color.BLACK);
-
-                paint.setStyle(Paint.Style.STROKE);
-                paint.setStrokeWidth(8);
-                int width = canvas.getWidth();
-                int height = canvas.getHeight();
-
-                // Iterate through all players
-                for (int n = 0; n < GameController.MAX_PLAYERS; n++) {
-
-                    GameController gameController = null;
-                    try {
-                        gameController =
-                                GameController.getControllerByPlayer(n + 1);
-                    }
-                    catch (PlayerNumberNotFoundException e) {
-                    }
-
-                    // If the cursor went out of the screen boundaries
-                    if ((x[n] < 0) | (y[n] < 0) | (x[n] > width)
-                            | (y[n] > height)) {
-                        // Reset cursors proportionally on a horizontally
-                        // centered line
-                        x[n] =
-                                width / (GameController.MAX_PLAYERS + 1)
-                                        * (n + 1);
-                        y[n] = height / 2;
-                    }
-
-                    if (gameController != null) {
-
-                        // Move the cursor proportionally to the stick angle
-                        float deltaX =
-                                gameController
-                                        .getAxisValue(GameController.AXIS_STICK_LEFT_X);
-                        float deltaY =
-                                gameController
-                                        .getAxisValue(GameController.AXIS_STICK_LEFT_Y);
-                        if ((deltaX * deltaX + deltaY * deltaY) > GameController.DEAD_ZONE
-                                * GameController.DEAD_ZONE) {
-                            // stick angle is greater than the center dead
-                            // zone
-                            x[n] += Math.round(deltaX * 10);
-                            y[n] += Math.round(deltaY * 10);
-                        }
-
-                        // Move the cursor function of the DPAD direction
-                        x[n] +=
-                                gameController
-                                        .isButtonPressed(GameController.BUTTON_DPAD_RIGHT) ? +5
-                                        : 0;
-                        x[n] +=
-                                gameController
-                                        .isButtonPressed(GameController.BUTTON_DPAD_LEFT) ? -5
-                                        : 0;
-                        y[n] +=
-                                gameController
-                                        .isButtonPressed(GameController.BUTTON_DPAD_DOWN) ? +5
-                                        : 0;
-                        y[n] +=
-                                gameController
-                                        .isButtonPressed(GameController.BUTTON_DPAD_UP) ? -5
-                                        : 0;
-
-                        // Draw a spot for that player
-                        paint.setColor(colors[n]);
-                        canvas.drawPoint(x[n], y[n], paint);
-
-                        // Draw a circle for each down transition of button
-                        // A on a gamepad or on the Dpad center on a remote
-                        if (gameController
-                                .wasButtonPressed(GameController.BUTTON_A)
-                                | gameController
-                                        .wasButtonPressed(GameController.BUTTON_DPAD_CENTER)) {
-                            canvas.drawCircle(x[n], y[n], 20, paint);
-                            final String xVal = Integer.toString(x[n]);
-                            final String yVal = Integer.toString(y[n]);
-                            mFirebaseRoot.child(xVal + ":" + yVal).setValue(true);
-                        }
-                    }
-                }
-
-                // Now pass over to the GPU for rendering.
-                GameController.startFrame();
-                surfaceHolder.unlockCanvasAndPost(canvas);
-            }
-
+        while(running){
+        	//TODO: input manager update if we need it
+        	//TODO: menu logic goes around the below 2 call
+        	update();
+        	draw();
+        	
             // Wait the equivalent of one frame at 60fps
             try {
                 Thread.sleep(17);
