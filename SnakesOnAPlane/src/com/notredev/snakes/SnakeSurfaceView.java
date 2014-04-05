@@ -2,6 +2,7 @@ package com.notredev.snakes;
 
 import com.amazon.device.gamecontroller.GameController;
 import com.amazon.device.gamecontroller.GameController.PlayerNumberNotFoundException;
+import com.firebase.client.Firebase;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -23,6 +24,7 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
     private Thread thread = null;
     private SurfaceHolder surfaceHolder;
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Firebase mFirebaseRoot;
 
     /*
      * Constructor
@@ -30,6 +32,8 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
     public SnakeSurfaceView(Context context) {
         super(context);
         surfaceHolder = getHolder();
+        // Create a reference to a Firebase location
+        mFirebaseRoot = new Firebase("https://radiant-fire-9333.firebaseio.com/SnakesOnAPlane");
     }
 
     /*
@@ -160,6 +164,9 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
                                 | gameController
                                         .wasButtonPressed(GameController.BUTTON_DPAD_CENTER)) {
                             canvas.drawCircle(x[n], y[n], 20, paint);
+                            final String xVal = Integer.toString(x[n]);
+                            final String yVal = Integer.toString(y[n]);
+                            mFirebaseRoot.child(xVal + ":" + yVal).setValue(true);
                         }
                     }
                 }
