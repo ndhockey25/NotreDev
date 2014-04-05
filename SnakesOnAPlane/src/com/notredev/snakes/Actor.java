@@ -4,7 +4,9 @@ public class Actor {
 	
 	enum ActorType {SNAKE, OBSTACLE, BULLET}
 	ActorType _type;
-	
+	java.util.LinkedList<GameBoardCell> actorCells = new java.util.LinkedList<GameBoardCell>(); 
+
+
 	public Actor(ActorType type)
 	{
 		_type = type;
@@ -14,4 +16,9 @@ public class Actor {
 	{
 		return _type;
 	}
+	
+	public java.util.LinkedList<GameBoardCell> getActorPositions() {
+		return actorCells;
+	}
+	
 }
