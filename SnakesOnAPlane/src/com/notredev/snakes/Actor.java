@@ -1,10 +1,12 @@
 package com.notredev.snakes;
 
-public class Actor {
+import java.util.LinkedList;
+
+public abstract class Actor {
 	
 	enum ActorType {SNAKE, OBSTACLE, BULLET}
 	ActorType _type;
-	java.util.LinkedList<GameBoardCell> _actorCells = new java.util.LinkedList<GameBoardCell>(); 
+	LinkedList<GameBoardCell> _actorCells = new LinkedList<GameBoardCell>(); 
 
 
 	public Actor(ActorType type, java.util.LinkedList<GameBoardCell> actorCells)
@@ -18,8 +20,12 @@ public class Actor {
 		return _type;
 	}
 	
-	public java.util.LinkedList<GameBoardCell> getActorCells() {
+	public LinkedList<GameBoardCell> getActorCells() {
 		return _actorCells;
+	}
+	
+	public void setActorCells(LinkedList<GameBoardCell> actorCells) {
+		_actorCells = actorCells;
 	}
 	
 }
