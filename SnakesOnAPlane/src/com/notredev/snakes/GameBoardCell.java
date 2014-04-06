@@ -1,7 +1,7 @@
 package com.notredev.snakes;
 
 import java.util.Collection;
-import java.util.TreeSet;
+import java.util.LinkedList;
 
 import android.util.Log;
 
@@ -9,7 +9,7 @@ public class GameBoardCell
 {
 	GameBoard gameBoard = GameBoard.Instance();
 	public enum Occupant{SNAKE, SNAKE_HEAD, RATTLE, FOOD, OBSTACLE, BULLETBILL, NOTHING};
-	private TreeSet<Actor> actors = new TreeSet<Actor>();
+	private LinkedList<Actor> actors = new LinkedList<Actor>();
 	int positionX;
 	int positionY;
 	boolean isAvailable = true;
@@ -20,12 +20,8 @@ public class GameBoardCell
 		positionY = posY;
 	}
 
-	public TreeSet<Actor> getActors() {
+	public LinkedList<Actor> getActors() {
 		return actors;
-	}
-
-	public void setActors(Collection<Actor> actors) {
-		this.actors = new TreeSet<Actor>(actors);
 	}
 	
 	public void addActor(Actor actor) {
