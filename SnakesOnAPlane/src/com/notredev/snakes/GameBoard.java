@@ -64,7 +64,7 @@ public class GameBoard {
 		java.util.List<GameBoardCell> listOfConflictCells = new java.util.ArrayList<GameBoardCell>();
 		for(int i = 0; i<listOfActors.size();i++)
 		{
-			for(GameBoardCell cell : listOfActors.get(i).getActorCells())
+			for(GameBoardCell cell : listOfActors.get(i).getCells())
 			{
 				listOfActorCells.add(cell);
 			}
@@ -72,7 +72,7 @@ public class GameBoard {
 		//loop Actor cells and resolve conflicts in those cells
 		for(GameBoardCell cell : listOfActorCells)
 		{
-			if(cell.listOfActors.size() > 1)
+			if(cell.getActors().size() > 1)
 			{
 				listOfConflictCells.add(resolveConflicts(cell));
 			}

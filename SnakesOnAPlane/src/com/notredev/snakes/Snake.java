@@ -1,9 +1,5 @@
 package com.notredev.snakes;
 
-import java.util.LinkedList;
-import java.util.ListIterator;
-
-
 public abstract class Snake extends Actor {
 
 	int playerNumber;
@@ -11,11 +7,9 @@ public abstract class Snake extends Actor {
 	boolean growOnNextMove = false; // Indicates if the snake should grow on his next move
 	
 	public Snake(GameBoardCell snakeHeadGameBoardCell, int playerNumber) {
-		super(ActorType.SNAKE, null);
-		LinkedList<GameBoardCell> bodyParts = new LinkedList<GameBoardCell>();
-		bodyParts.add(snakeHeadGameBoardCell);
+		super(ActorType.SNAKE);
+		addCellBack(snakeHeadGameBoardCell);
 		// TODO: Give snake a body
-		setActorCells(bodyParts);
 		
 		this.playerNumber = playerNumber;
 		
@@ -27,45 +21,37 @@ public abstract class Snake extends Actor {
 	}
 	
 	public GameBoardCell getHeadGameCell() {
-		return getActorCells().getFirst();
+		return cells.getFirst();
 	}
 	
 	protected void move(Direction direction) {		
 		currentDirection = direction;
 		GameBoardCell nextCell = getHeadGameCell().getNextGameBoardCell(direction);
 		
-		LinkedList<GameBoardCell> body = getActorCells();
-		body.addFirst(nextCell);
+		addCellFront(nextCell);
 
 		if (growOnNextMove) {
 			growOnNextMove = false;
 		}
 		else {
-			body.pop();
+			removeCellBack();
 		}
-		
-		setActorCells(body);
 	}
 	
 	public Obstacle split(GameBoardCell splitCell) {
-		LinkedList<GameBoardCell> obstacleCells = new LinkedList<GameBoardCell>();
+		Obstacle obstacle = new Obstacle();
 		
-		ListIterator<GameBoardCell> snakeIterator = getActorCells().listIterator();
-		while(snakeIterator.hasNext()) {
-			GameBoardCell cell = snakeIterator.next();
-			if (cell == splitCell) {
-				snakeIterator.remove(); // Remove the cell that we are splitting on
-				break;
+		if (cells.contains(splitCell)) {
+			for (int i = cells.size() - 1; i >= 0; i--) { // Reverse loop
+				GameBoardCell removedCell = removeCellBack(); // Remove cell from snake
+				obstacle.addCellBack(removedCell); // Add cell to obstacle
+				if (cells.get(i) == splitCell) {
+					break;
+				}
 			}
 		}
 		
-		while(snakeIterator.hasNext()) {
-			GameBoardCell cell = snakeIterator.next();
-			obstacleCells.add(cell); // Copy each cell of the snake's tail to the obstacle
-			snakeIterator.remove(); // Remove it from the snake
-		}
-		
-		return new Obstacle(obstacleCells);
+		return obstacle;
 	}
 	
 }

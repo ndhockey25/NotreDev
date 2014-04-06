@@ -157,9 +157,9 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
 	        {
 	        	int posX = (i % GameBoard.Instance().MAX_COLUMNS) * gridWidth + gridWidth/2;
 	        	int posY = ((int)i/GameBoard.Instance().MAX_COLUMNS) * gridHeight + gridHeight/2;
-	        	if(GameBoard.Instance().gameBoardCells[i].listOfActors.size() > 0)
+	        	if(GameBoard.Instance().gameBoardCells[i].getActors().size() > 0)
 	        	{
-	        		Actor actor = GameBoard.Instance().gameBoardCells[i].listOfActors.get(0);
+	        		Actor actor = GameBoard.Instance().gameBoardCells[i].getActors().first();
 		        	switch(actor.getType())
 		        	{
 		        	case SNAKE:

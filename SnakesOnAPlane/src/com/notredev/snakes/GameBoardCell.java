@@ -1,30 +1,39 @@
 package com.notredev.snakes;
 
+import java.util.Collection;
+import java.util.TreeSet;
+
 import android.util.Log;
 
 public class GameBoardCell 
 {
 	GameBoard gameBoard = GameBoard.Instance();
 	public enum Occupant{SNAKE, SNAKE_HEAD, RATTLE, FOOD, OBSTACLE, BULLETBILL, NOTHING};
-	public java.util.List<Actor> listOfActors;
+	private TreeSet<Actor> actors = new TreeSet<Actor>();
 	int positionX;
 	int positionY;
-	boolean isAvailable;
+	boolean isAvailable = true;
 	
 	public GameBoardCell(int posX, int posY)
 	{
 		positionX = posX;
 		positionY = posY;
-		isAvailable = true;
-		listOfActors = new java.util.ArrayList<Actor>();
 	}
 
-	public java.util.List<Actor> getListOfActors() {
-		return listOfActors;
+	public TreeSet<Actor> getActors() {
+		return actors;
 	}
 
-	public void setListOfActors(java.util.List<Actor> listOfActors) {
-		this.listOfActors = listOfActors;
+	public void setActors(Collection<Actor> actors) {
+		this.actors = new TreeSet<Actor>(actors);
+	}
+	
+	public void addActor(Actor actor) {
+		actors.add(actor);
+	}
+	
+	public void removeActor(Actor actor) {
+		actors.remove(actor);
 	}
 
 	public int getPositionX() {
@@ -88,7 +97,7 @@ public class GameBoardCell
 		int result = 1;
 		result = prime * result + (isAvailable ? 1231 : 1237);
 		result = prime * result
-				+ ((listOfActors == null) ? 0 : listOfActors.hashCode());
+				+ ((actors == null) ? 0 : actors.hashCode());
 		result = prime * result + positionX;
 		result = prime * result + positionY;
 		return result;
@@ -105,10 +114,10 @@ public class GameBoardCell
 		GameBoardCell other = (GameBoardCell) obj;
 		if (isAvailable != other.isAvailable)
 			return false;
-		if (listOfActors == null) {
-			if (other.listOfActors != null)
+		if (actors == null) {
+			if (other.actors != null)
 				return false;
-		} else if (!listOfActors.equals(other.listOfActors))
+		} else if (!actors.equals(other.actors))
 			return false;
 		if (positionX != other.positionX)
 			return false;
