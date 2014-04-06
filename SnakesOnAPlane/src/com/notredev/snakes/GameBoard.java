@@ -96,8 +96,17 @@ public class GameBoard {
 		return gameBoardCells[index];
 	}
 	
-	public void putCell(GameBoardCell cell)
-	{
+	public void putCell(GameBoardCell cell) throws CellOutOfBoundsException {
+		if (cell.positionX > MAX_ROWS && cell.positionX > MAX_COLUMNS) {
+			throw new CellOutOfBoundsException("Cannot put cell in GameBoard. " + cell.positionX + " exceeds GameBoard MAX_ROWS of " + MAX_ROWS + " and " + cell.positionY + " exceeds GameBoard MAX_COLUMNS of " + MAX_COLUMNS);
+		}
+		else if (cell.positionX > MAX_ROWS) {
+			throw new CellOutOfBoundsException("Cannot put cell in GameBoard. " + cell.positionX + " exceeds GameBoard MAX_ROWS of " + MAX_ROWS);
+		}
+		else if (cell.positionY > MAX_COLUMNS) {
+			throw new CellOutOfBoundsException("Cannot put cell in GameBoard. " + cell.positionY + " exceeds GameBoard MAX_COLUMNS of " + MAX_COLUMNS);
+		}
+		
 		gameBoardCells[(cell.positionY * MAX_COLUMNS) + cell.positionX] = cell;
 	}
 	
