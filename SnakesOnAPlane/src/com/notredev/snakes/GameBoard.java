@@ -46,4 +46,15 @@ public class GameBoard {
 			
 		}
 	}
+	
+	public GameBoardCell getCell(int row, int column) throws RuntimeException {
+		if (row > MAX_ROWS) {
+			throw new RuntimeException("Exceeded max row");
+		}
+		if (column > MAX_COLUMNS) {
+			throw new RuntimeException("Exceeded max column");
+		}
+		int index = MAX_COLUMNS*row + column;
+		return gameBoardCells[index];
+	}
 }

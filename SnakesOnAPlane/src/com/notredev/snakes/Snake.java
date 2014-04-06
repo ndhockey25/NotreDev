@@ -6,6 +6,9 @@ import java.util.Map;
 
 public class Snake extends Actor {
 
+	InputManager inputManager = InputManager.Instance();
+	GameBoard gameBoard = new GameBoard();
+	
 	Direction direction;
 	
 	public Snake(GameBoardCell snakeHeadGameBoardCell) {
@@ -20,9 +23,30 @@ public class Snake extends Actor {
 		return getActorCells().getFirst();
 	}
 	
-	public void move(Map<Direction, Boolean> input) {
+	public void move(InputState state) {
+		int headRow = getHeadGameCell().positionX;
+		int headColumn = getHeadGameCell().positionY;
 		
+		GameBoardCell nextCell;
+		if (state.Up()) {
+			nextCell = gameBoard.getCell(headRow+1, headColumn);
+		}
+		if (state.Down()) {
+			nextCell = gameBoard.getCell(headRow-1, headColumn);
+		}
+		if (state.Left()) {
+			nextCell = gameBoard.getCell(headRow, headColumn-1);
+		}
+		if (state.Right()) {
+			nextCell = gameBoard.getCell(headRow, headColumn+1);
+		}
 		
+	}
+	
+	private boolean multipleInputStates(InputState) {
+		if (state.Up()) {
+			if (state.Down()
+		}
 	}
 	
 	public Obstacle split(GameBoardCell splitCell) {
