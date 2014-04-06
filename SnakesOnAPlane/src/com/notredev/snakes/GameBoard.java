@@ -8,7 +8,9 @@ public class GameBoard {
 	int MAX_COLUMNS;
 	
 	private static GameBoard _gameBoard = new GameBoard();
-	
+	public java.util.List<Actor> listOfActors;
+
+
 	public static GameBoard Instance()
 	{
 		return _gameBoard;
@@ -23,6 +25,8 @@ public class GameBoard {
 		{
 			gameBoardCells[i] = new GameBoardCell();
 		}
+		//initialize list of actors for game
+		listOfActors = new java.util.ArrayList<Actor>();
 	}
 	
 	public GameBoardCell[] getGameBoardCells() {
@@ -45,16 +49,19 @@ public class GameBoard {
 		MAX_COLUMNS = mAX_COLUMNS;
 	}
 	
+	public java.util.List<Actor> getListOfActors() {
+		return listOfActors;
+	}
 
 	//This method will loop through all gameboardcells, and
 	//update the list of occupants
 	public void updateOccupants()
 	{
-		for(int i=0;i>gameBoardCells.length;i++)
-		{
-			
-			
-		}
+		//loop Actors, and populate cells that are occupied by actors
+		java.util.List<GameBoardCell> listOfActorCells = new java.util.ArrayList<GameBoardCell>();
+		//loop Actor cells and resolve conflicts in those cells
+		//create a set of new cells that resulted from the conflicts, and add them afterwards
+		//after this, we will draw
 	}
 	
 	public GameBoardCell getCell(int row, int column) throws RuntimeException {
