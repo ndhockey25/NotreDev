@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Map;
 
+import android.graphics.Path.Direction;
+
 public class Snake extends Actor {
 
 	Direction direction;
