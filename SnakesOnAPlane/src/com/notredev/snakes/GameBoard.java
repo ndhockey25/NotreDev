@@ -184,7 +184,18 @@ public class GameBoard {
 				
 			}
 		}
-		
+
+		//snake head and obstacle
+		if (actors.containsKey(ActorType.OBSTACLE) && actors.containsKey(ActorType.SNAKE)) {
+			// TODO: Handle collisions of snake head and obstacle
+			for (Actor snakeActor : actors.get(ActorType.SNAKE)) {
+				if(((Snake) snakeActor).getHeadGameCell().equals(cell))
+				{
+					((Snake)snakeActor).setGrowOnNextMove(true);
+				}
+				
+			}
+		}	
 		
 		return cell;
 	}

@@ -5,6 +5,7 @@ public abstract class Snake extends Actor {
 	private int playerNumber;
 	Direction currentDirection;
 	private boolean growOnNextMove = false; // Indicates if the snake should grow on his next move
+	private boolean isAlive = true;
 	
 	public Snake(GameBoardCell snakeHeadGameBoardCell, int playerNumber) {
 		super(ActorType.SNAKE);
@@ -56,6 +57,11 @@ public abstract class Snake extends Actor {
 		}
 		
 		return obstacle;
+	}
+	
+	public void die()
+	{
+		isAlive = false;
 	}
 	
 }
