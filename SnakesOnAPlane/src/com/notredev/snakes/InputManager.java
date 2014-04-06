@@ -8,65 +8,6 @@ import com.amazon.device.gamecontroller.GameController.DeviceNotFoundException;
 import com.amazon.device.gamecontroller.GameController.PlayerNumberNotFoundException;
 
 public class InputManager {
-
-	public class InputState
-	{
-		private boolean isUp = false;
-		private boolean isDown = false;
-		private boolean isLeft = false;
-		private boolean isRight = false;
-		private boolean isA = false;
-		
-		public InputState() {}
-		
-		public InputState(boolean up, boolean down, boolean left, boolean right, boolean a) {
-			this.isUp = up;
-			this.isDown = down;
-			this.isLeft = left;
-			this.isRight = right;
-			this.isA = a;
-		}
-		
-		public boolean Up(){
-			return this.isUp;
-		}
-		
-		public boolean Down() {
-			return this.isDown;
-		}
-		
-		public boolean Left() {
-			return this.isLeft;
-		}
-		
-		public boolean Right() {
-			return this.isRight;
-		}
-		
-		public boolean A() {
-			return this.isA;
-		}
-		
-		public void SetUp(boolean state) {
-			this.isUp = state;
-		}
-		
-		public void SetDown(boolean state) {
-			this.isDown = state;
-		}
-		
-		public void SetLeft(boolean state) {
-			this.isLeft = state;
-		}
-		
-		public void SetRight(boolean state) {
-			this.isRight = state;
-		}
-		
-		public void SetA(boolean state) {
-			this.isA = state;
-		}
-	}
 	
 	private static InputManager _inputManager = new InputManager();
 	
@@ -81,12 +22,6 @@ public class InputManager {
 		
 	}
 	
-	//    /*
-	//     * Forward key down events to GameController so it can manage
-	//     * state(non-Javadoc)
-	//     * 
-	//     * @see android.app.Activity#onKeyDown(int, android.view.KeyEvent)
-	//     */
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean handled = false;
 		try {
@@ -113,14 +48,7 @@ public class InputManager {
 		}
 		return handled;
 	}
-	//
-	//    /*
-	//     * Forward key up events to GameController so it can manage
-	//     * state(non-Javadoc)
-	//     * 
-	//     * @see android.app.Activity#onKeyUp(int, android.view.KeyEvent)
-	//     */
-	//    @Override
+
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		boolean handled = false;
 		try {
@@ -148,13 +76,6 @@ public class InputManager {
 		return handled;
 	}
 	
-	//
-	//    /*
-	//     * Forward motion events to GameController so it can manage
-	//     * state(non-Javadoc)
-	//     * 
-	//     * @see android.app.Activity#onGenericMotionEvent(android.view.MotionEvent)
-	//     */
 	public boolean onGenericMotionEvent(MotionEvent event) {
 		boolean handled = false;
 		try {
@@ -199,6 +120,7 @@ public class InputManager {
 					}
 				}
 				
+				// TODO: Fix DPAD
 //				if (gameController.isButtonPressed(GameController.BUTTON_DPAD_DOWN)) {
 //					inputState.SetDown(true);
 //				}
