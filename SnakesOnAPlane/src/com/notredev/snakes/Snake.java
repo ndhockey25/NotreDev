@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Snake extends Actor {
 
-	Direction direction;
+	//Direction direction;
 	
 	public Snake(GameBoardCell snakeHeadGameBoardCell) {
 		super(ActorType.SNAKE, null);
@@ -20,10 +20,10 @@ public class Snake extends Actor {
 		return getActorCells().getFirst();
 	}
 	
-	public void move(Map<Direction, Boolean> input) {
+	//public void move(Map<Direction, Boolean> input) {
 		
 		
-	}
+	//}
 	
 	public Obstacle split(GameBoardCell splitCell) {
 		LinkedList<GameBoardCell> obstacleCells = new LinkedList<GameBoardCell>();

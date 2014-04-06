@@ -13,6 +13,10 @@ public class GameBoard {
 		MAX_ROWS = 68;
 		MAX_COLUMNS = 120;
 		gameBoardCells = new GameBoardCell[MAX_ROWS*MAX_COLUMNS];
+		for(int i=0; i<gameBoardCells.length; i++)
+		{
+			gameBoardCells[i] = new GameBoardCell();
+		}
 	}
 	
 	public GameBoardCell[] getGameBoardCells() {

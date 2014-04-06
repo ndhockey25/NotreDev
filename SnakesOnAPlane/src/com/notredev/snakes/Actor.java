@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public abstract class Actor {
 	
-	enum ActorType {SNAKE, OBSTACLE, BULLET}
+	public enum ActorType {SNAKE, OBSTACLE, BULLET}
 	ActorType _type;
 	LinkedList<GameBoardCell> _actorCells = new LinkedList<GameBoardCell>(); 
 
