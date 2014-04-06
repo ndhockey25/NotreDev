@@ -4,7 +4,11 @@ public class Obstacle extends Actor {
 	
 	public Obstacle(java.util.LinkedList<GameBoardCell> actorCells) {
 		super(ActorType.OBSTACLE, actorCells);
-		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void update() {
+		// Obstacles do not move or change on update
 	}
 
 }

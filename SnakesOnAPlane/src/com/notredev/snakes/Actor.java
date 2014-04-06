@@ -27,4 +27,6 @@ public abstract class Actor {
 		_actorCells = actorCells;
 	}
 	
+	public abstract void update();
+	
 }

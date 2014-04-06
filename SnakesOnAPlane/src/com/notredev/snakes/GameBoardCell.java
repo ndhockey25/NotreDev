@@ -1,7 +1,10 @@
 package com.notredev.snakes;
 
+import android.util.Log;
+
 public class GameBoardCell 
 {
+	GameBoard gameBoard = GameBoard.Instance();
 	public enum Occupant{SNAKE, SNAKE_HEAD, RATTLE, FOOD, OBSTACLE, BULLETBILL, NOTHING};
 	public java.util.List<Actor> listOfActors;
 	int positionX;
@@ -47,6 +50,37 @@ public class GameBoardCell
 	public void setAvailable(boolean isAvailable) {
 		this.isAvailable = isAvailable;
 	}
+	
+	protected GameBoardCell getNextGameBoardCell(Direction direction) {
+		int nextRow = positionX;
+		int nextColumn = positionY;
+
+		switch (direction) {
+        	case UP:
+        		nextRow--;
+        		break;
+        	case DOWN:
+        		nextRow++;
+        		break;
+        	case LEFT:
+        		nextColumn--;
+        		break;
+        	case RIGHT:
+        		nextColumn++;
+        		break;
+		}
+
+		
+		GameBoardCell nextCell = null;
+		try {
+			nextCell = gameBoard.getCell(nextRow, nextColumn);
+		}
+		catch (CellOutOfBoundsException e) {
+			Log.e("getCell", e.toString());
+		}
+		
+		return nextCell;
+	}
 
 	@Override
 	public int hashCode() {
@@ -82,7 +116,5 @@ public class GameBoardCell
 			return false;
 		return true;
 	}
-	
-	
 	
 }

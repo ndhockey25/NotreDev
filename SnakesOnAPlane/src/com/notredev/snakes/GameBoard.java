@@ -85,9 +85,9 @@ public class GameBoard {
 		//after this, we will draw
 	}
 	
-	public GameBoardCell getCell(int row, int column) throws RuntimeException {
+	public GameBoardCell getCell(int row, int column) throws CellOutOfBoundsException {
 		if (row > MAX_ROWS) {
-			throw new RuntimeException("Exceeded max row");
+			throw new CellOutOfBoundsException("Exceeded max row");
 		}
 		if (column > MAX_COLUMNS) {
 			throw new RuntimeException("Exceeded max column");

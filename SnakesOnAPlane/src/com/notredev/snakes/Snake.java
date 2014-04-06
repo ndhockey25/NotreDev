@@ -6,7 +6,6 @@ import java.util.ListIterator;
 
 public abstract class Snake extends Actor {
 
-	GameBoard gameBoard = GameBoard.Instance();
 	int playerNumber;
 	Direction currentDirection;
 	boolean growOnNextMove = false; // Indicates if the snake should grow on his next move
@@ -18,12 +17,10 @@ public abstract class Snake extends Actor {
 		// TODO: Give snake a body
 		setActorCells(bodyParts);
 		
-		playerNumber = this.playerNumber;
+		this.playerNumber = playerNumber;
 		
 		currentDirection = Direction.RIGHT;
 	}
-	
-	public abstract void update();
 	
 	public int getPlayerNumber() {
 		return playerNumber;
@@ -34,27 +31,8 @@ public abstract class Snake extends Actor {
 	}
 	
 	protected void move(Direction direction) {		
-		int nextRow = getHeadGameCell().positionX;
-		int nextColumn = getHeadGameCell().positionY;
-		
 		currentDirection = direction;
-
-		switch (direction) {
-        	case UP:
-        		nextRow--;
-        		break;
-        	case DOWN:
-        		nextRow++;
-        		break;
-        	case LEFT:
-        		nextColumn--;
-        		break;
-        	case RIGHT:
-        		nextColumn++;
-        		break;
-		}
-		
-		GameBoardCell nextCell = gameBoard.getCell(nextRow, nextColumn);
+		GameBoardCell nextCell = getHeadGameCell().getNextGameBoardCell(direction);
 		
 		LinkedList<GameBoardCell> body = getActorCells();
 		body.addFirst(nextCell);
