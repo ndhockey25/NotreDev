@@ -3,8 +3,7 @@ package com.notredev.snakes;
 import java.util.LinkedList;
 
 public abstract class Actor {
-	
-	public enum ActorType {SNAKE, OBSTACLE, BULLET}
+	public enum ActorType {SNAKE, OBSTACLE, BULLET, FOOD}
 	ActorType _type;
 	LinkedList<GameBoardCell> _actorCells = new LinkedList<GameBoardCell>(); 
 

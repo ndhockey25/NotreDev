@@ -32,8 +32,6 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
     int y[] = new int[] {-1, -1, -1, -1};
     int canvasWidth = 1920;
     int canvasHeight = 1080;
-    
-    public GameBoard gameBoard = new GameBoard();
 
     // Define a color for each player
     int colors[] = new int[] {Color.RED, Color.GREEN, Color.YELLOW, Color.MAGENTA};
@@ -140,26 +138,26 @@ int derp=0;
 	        paint.setStyle(Paint.Style.STROKE);
 	        paint.setStrokeWidth(1);
 	        
-	        if(derp++>=gameBoard.gameBoardCells.length)
+	        if(derp++>=GameBoard.Instance().gameBoardCells.length)
 	        	derp=0;
 	        java.util.LinkedList<GameBoardCell> tempCells = new java.util.LinkedList<GameBoardCell>();
-	        tempCells.add(gameBoard.gameBoardCells[derp]);
+	        tempCells.add(GameBoard.Instance().gameBoardCells[derp]);
 	        Obstacle temp = new Obstacle(tempCells);
-	        gameBoard.gameBoardCells[derp].listOfActors.add(temp);
+	        GameBoard.Instance().gameBoardCells[derp].listOfActors.add(temp);
 	        
 	        //canvas.drawLine(0, 0, canvasWidth/gameBoard.MAX_COLUMNS, canvasHeight/gameBoard.MAX_ROWS, paint);
 	        paint.setColor(Color.WHITE);
 	        int xPos = 0;
 	        int yPos = 0;
-	        int gridWidth = canvasWidth/gameBoard.MAX_COLUMNS;
-	        int gridHeight = canvasHeight/gameBoard.MAX_ROWS;
-	        for(int i=0; i<gameBoard.gameBoardCells.length; i++)
+	        int gridWidth = canvasWidth/GameBoard.Instance().MAX_COLUMNS;
+	        int gridHeight = canvasHeight/GameBoard.Instance().MAX_ROWS;
+	        for(int i=0; i<GameBoard.Instance().gameBoardCells.length; i++)
 	        {
-	        	int posX = (i % gameBoard.MAX_COLUMNS) * gridWidth + gridWidth/2;
-	        	int posY = ((int)i/gameBoard.MAX_COLUMNS) * gridHeight + gridHeight/2;
-	        	if(gameBoard.gameBoardCells[i].listOfActors.size() > 0)
+	        	int posX = (i % GameBoard.Instance().MAX_COLUMNS) * gridWidth + gridWidth/2;
+	        	int posY = ((int)i/GameBoard.Instance().MAX_COLUMNS) * gridHeight + gridHeight/2;
+	        	if(GameBoard.Instance().gameBoardCells[i].listOfActors.size() > 0)
 	        	{
-		        	switch(gameBoard.gameBoardCells[i].listOfActors.get(0).getType())
+		        	switch(GameBoard.Instance().gameBoardCells[i].listOfActors.get(0).getType())
 		        	{
 		        	case SNAKE:
 		        		paint.setColor(Color.RED);
@@ -179,8 +177,8 @@ int derp=0;
 	        	{
 	        		paint.setColor(Color.WHITE);
 	        	}
-	        	canvas.drawRect(posX-gridWidth/2.0f+1, posY-gridHeight/2.0f+1, 
-	        			posX+gridWidth/2.0f-1, posY+gridHeight/2.0f-1, paint);
+	        	int posX = (i % GameBoard.Instance().MAX_COLUMNS) * gridWidth + gridWidth/2;
+	        	int posY = ((int)i/GameBoard.Instance().MAX_COLUMNS) * gridHeight + gridHeight/2;
 	        }
 	        
 	        paint.setStyle(Paint.Style.STROKE);

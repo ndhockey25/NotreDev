@@ -2,11 +2,14 @@ package com.notredev.snakes;
 
 import java.util.LinkedList;
 import java.util.ListIterator;
-import java.util.Map;
+
+import android.graphics.Path.Direction;
 
 public class Snake extends Actor {
 
-	//Direction direction;
+	InputManager inputManager = InputManager.Instance();
+	
+	Direction currentDirection;
 	
 	public Snake(GameBoardCell snakeHeadGameBoardCell) {
 		super(ActorType.SNAKE, null);
@@ -20,11 +23,60 @@ public class Snake extends Actor {
 		return getActorCells().getFirst();
 	}
 	
-	//public void move(Map<Direction, Boolean> input) {
-		
-		
-	//}
+	/**
+	 * Move in the current direction
+	 */
+	public void move() {
+		move(currentDirection);
+	}
 	
+	public void move(Direction direction) {		
+		int nextRow = getHeadGameCell().positionX;
+		int nextColumn = getHeadGameCell().positionY;
+		
+		currentDirection = direction;
+		
+		switch (direction) {
+        	case UP:
+        		nextRow = getHeadGameCell().positionX - 1;
+        		nextColumn = getHeadGameCell().positionY;
+        		break;
+        	case DOWN:
+        		nextRow = getHeadGameCell().positionX + 1;
+        		nextColumn = getHeadGameCell().positionY;
+        		break;
+        	case LEFT:
+        		nextRow = getHeadGameCell().positionX;
+        		nextColumn = getHeadGameCell().positionY - 1;
+        		break;
+        	case RIGHT:
+        		nextRow = getHeadGameCell().positionX;
+        		nextColumn = getHeadGameCell().positionY + 1;
+        		break;
+		}
+		
+		GameBoardCell nextCell = gameBoard.getCell(nextRow, nextColumn);
+	}
+	
+	public Direction getDirection(InputState state) {
+		if (!(state.Up() ^ state.Down() ^ state.Left() ^ state.Right())) {
+			// If multiple directions are pressed, continue in the current direction
+			return currentDirection; 
+		}
+		if (state.Up()) {
+			return Direction.UP;
+		}
+		if (state.Down()) {
+			return Direction.DOWN;
+		}
+		if (state.Left()) {
+			return Direction.LEFT;
+		}
+		if (state.Right()) {
+			return Direction.RIGHT;
+		}
+		return currentDirection; // Default to the direction the snake is already moving
+	}
 	public Obstacle split(GameBoardCell splitCell) {
 		LinkedList<GameBoardCell> obstacleCells = new LinkedList<GameBoardCell>();
 		
