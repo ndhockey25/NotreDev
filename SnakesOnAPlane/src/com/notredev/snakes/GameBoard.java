@@ -1,6 +1,7 @@
 package com.notredev.snakes;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -166,7 +167,23 @@ public class GameBoard {
 			}
 		}
 		
-		
+		if (actors.containsKey(ActorType.SNAKE)) {
+			if (actors.get(ActorType.SNAKE).size() > 1) { // If there is more than one snake in the cell
+				HashSet<Snake> snakeHeads = new HashSet<Snake>();
+				HashSet<Snake> snakeBodies = new HashSet<Snake>();
+				for (Actor actor : cell.getActors()) {
+					Snake snake = (Snake)actor;
+					if (snake.getHeadGameCell() == cell) {
+						snakeHeads.add(snake);
+					}
+					else {
+						snakeBodies.add(snake);
+					}
+				}
+				
+				
+			}
+		}
 		
 		
 		return cell;
