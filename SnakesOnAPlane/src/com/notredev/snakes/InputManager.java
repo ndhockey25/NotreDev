@@ -22,12 +22,6 @@ public class InputManager {
 		
 	}
 	
-	//    /*
-	//     * Forward key down events to GameController so it can manage
-	//     * state(non-Javadoc)
-	//     * 
-	//     * @see android.app.Activity#onKeyDown(int, android.view.KeyEvent)
-	//     */
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean handled = false;
 		try {
@@ -54,14 +48,7 @@ public class InputManager {
 		}
 		return handled;
 	}
-	//
-	//    /*
-	//     * Forward key up events to GameController so it can manage
-	//     * state(non-Javadoc)
-	//     * 
-	//     * @see android.app.Activity#onKeyUp(int, android.view.KeyEvent)
-	//     */
-	//    @Override
+
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		boolean handled = false;
 		try {
@@ -89,13 +76,6 @@ public class InputManager {
 		return handled;
 	}
 	
-	//
-	//    /*
-	//     * Forward motion events to GameController so it can manage
-	//     * state(non-Javadoc)
-	//     * 
-	//     * @see android.app.Activity#onGenericMotionEvent(android.view.MotionEvent)
-	//     */
 	public boolean onGenericMotionEvent(MotionEvent event) {
 		boolean handled = false;
 		try {
@@ -140,6 +120,7 @@ public class InputManager {
 					}
 				}
 				
+				// TODO: Fix DPAD
 //				if (gameController.isButtonPressed(GameController.BUTTON_DPAD_DOWN)) {
 //					inputState.SetDown(true);
 //				}
