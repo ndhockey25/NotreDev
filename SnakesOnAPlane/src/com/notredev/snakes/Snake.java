@@ -20,6 +20,8 @@ public abstract class Snake extends Actor {
 		setActorCells(bodyParts);
 		
 		playerNumber = this.playerNumber;
+		
+		currentDirection = Direction.RIGHT;
 	}
 	
 	public GameBoardCell getHeadGameCell() {
