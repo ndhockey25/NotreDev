@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 
 public class MainActivity extends Activity {
 	
+	public InputManager inputManager = InputManager.Instance();
     // View for this activity
     private SnakeSurfaceView mSurfaceView;
 
@@ -29,56 +30,20 @@ public class MainActivity extends Activity {
         GameController.init(this);
     }
 
-    /*
-     * Forward key down events to GameController so it can manage
-     * state(non-Javadoc)
-     * 
-     * @see android.app.Activity#onKeyDown(int, android.view.KeyEvent)
-     */
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        boolean handled = false;
-        try {
-            handled = GameController.onKeyDown(keyCode, event);
-        }
-        catch (DeviceNotFoundException e) {
-        }
-        return handled || super.onKeyDown(keyCode, event);
-    }
-
-    /*
-     * Forward key up events to GameController so it can manage
-     * state(non-Javadoc)
-     * 
-     * @see android.app.Activity#onKeyUp(int, android.view.KeyEvent)
-     */
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        boolean handled = false;
-        try {
-            handled = GameController.onKeyUp(keyCode, event);
-        }
-        catch (DeviceNotFoundException e) {
-        }
-        return handled || super.onKeyUp(keyCode, event);
-    }
-
-    /*
-     * Forward motion events to GameController so it can manage
-     * state(non-Javadoc)
-     * 
-     * @see android.app.Activity#onGenericMotionEvent(android.view.MotionEvent)
-     */
-    @Override
-    public boolean onGenericMotionEvent(MotionEvent event) {
-        boolean handled = false;
-        try {
-            handled = GameController.onGenericMotionEvent(event);
-        }
-        catch (DeviceNotFoundException e) {
-        }
-        return handled || super.onGenericMotionEvent(event);
-    }
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		return this.inputManager.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
+	}
+	
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		return this.inputManager.onKeyUp(keyCode, event) || super.onKeyUp(keyCode, event);
+	}
+	
+	@Override
+	public boolean onGenericMotionEvent(MotionEvent event) {
+		return this.inputManager.onGenericMotionEvent(event) || super.onGenericMotionEvent(event);
+	}
 
     @Override
     protected void onPause() {
