@@ -7,7 +7,8 @@ import java.util.LinkedList;
 public abstract class Actor {
 	public enum ActorType {SNAKE, OBSTACLE, BULLET, FOOD}
 	ActorType type;
-	LinkedList<GameBoardCell> cells = new LinkedList<GameBoardCell>(); 
+	LinkedList<GameBoardCell> cells = new LinkedList<GameBoardCell>();
+	GameBoard gameBoard = GameBoard.Instance();
 
 	public Actor(ActorType type)
 	{

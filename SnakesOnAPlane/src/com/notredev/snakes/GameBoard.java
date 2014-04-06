@@ -1,5 +1,7 @@
 package com.notredev.snakes;
 
+import android.util.Log;
+
 public class GameBoard {
 	
 	GameBoardCell[] gameBoardCells;
@@ -90,24 +92,46 @@ public class GameBoard {
 			throw new CellOutOfBoundsException("Exceeded max row");
 		}
 		if (column > MAX_COLUMNS) {
-			throw new RuntimeException("Exceeded max column");
+			throw new CellOutOfBoundsException("Exceeded max column");
 		}
 		int index = MAX_COLUMNS*row + column;
 		return gameBoardCells[index];
 	}
 	
 	public void putCell(GameBoardCell cell) throws CellOutOfBoundsException {
-		if (cell.positionX > MAX_ROWS && cell.positionX > MAX_COLUMNS) {
-			throw new CellOutOfBoundsException("Cannot put cell in GameBoard. " + cell.positionX + " exceeds GameBoard MAX_ROWS of " + MAX_ROWS + " and " + cell.positionY + " exceeds GameBoard MAX_COLUMNS of " + MAX_COLUMNS);
+		if (cell.getPositionX() > MAX_ROWS && cell.getPositionX() > MAX_COLUMNS) {
+			throw new CellOutOfBoundsException("Cannot put cell in GameBoard. " + cell.getPositionX() + " exceeds GameBoard MAX_ROWS of " + MAX_ROWS + " and " + cell.getPositionY() + " exceeds GameBoard MAX_COLUMNS of " + MAX_COLUMNS);
 		}
-		else if (cell.positionX > MAX_ROWS) {
-			throw new CellOutOfBoundsException("Cannot put cell in GameBoard. " + cell.positionX + " exceeds GameBoard MAX_ROWS of " + MAX_ROWS);
+		else if (cell.getPositionX() > MAX_ROWS) {
+			throw new CellOutOfBoundsException("Cannot put cell in GameBoard. " + cell.getPositionX() + " exceeds GameBoard MAX_ROWS of " + MAX_ROWS);
 		}
-		else if (cell.positionY > MAX_COLUMNS) {
-			throw new CellOutOfBoundsException("Cannot put cell in GameBoard. " + cell.positionY + " exceeds GameBoard MAX_COLUMNS of " + MAX_COLUMNS);
+		else if (cell.getPositionY() > MAX_COLUMNS) {
+			throw new CellOutOfBoundsException("Cannot put cell in GameBoard. " + cell.getPositionY() + " exceeds GameBoard MAX_COLUMNS of " + MAX_COLUMNS);
 		}
 		
-		gameBoardCells[(cell.positionY * MAX_COLUMNS) + cell.positionX] = cell;
+		gameBoardCells[(cell.getPositionY() * MAX_COLUMNS) + cell.getPositionX()] = cell;
+	}
+	
+	public GameBoardCell getNextCell(GameBoardCell cell, Direction direction) throws CellOutOfBoundsException {
+		int nextRow = cell.getPositionY();
+		int nextColumn = cell.getPositionX();
+
+		switch (direction) {
+        	case UP:
+        		nextRow--;
+        		break;
+        	case DOWN:
+        		nextRow++;
+        		break;
+        	case LEFT:
+        		nextColumn--;
+        		break;
+        	case RIGHT:
+        		nextColumn++;
+        		break;
+		}
+
+		return getCell(nextRow, nextColumn);
 	}
 	
 	private GameBoardCell resolveConflicts(GameBoardCell cell)

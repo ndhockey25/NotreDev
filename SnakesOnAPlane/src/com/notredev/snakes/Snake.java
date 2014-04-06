@@ -24,9 +24,9 @@ public abstract class Snake extends Actor {
 		return cells.getFirst();
 	}
 	
-	protected void move(Direction direction) {		
+	protected void move(Direction direction) throws CellOutOfBoundsException {		
 		currentDirection = direction;
-		GameBoardCell nextCell = getHeadGameCell().getNextGameBoardCell(direction);
+		GameBoardCell nextCell = gameBoard.getNextCell(getHeadGameCell(), direction);
 		
 		addCellFront(nextCell);
 

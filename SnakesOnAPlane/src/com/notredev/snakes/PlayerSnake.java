@@ -11,7 +11,12 @@ public class PlayerSnake extends Snake {
 	@Override
 	public void update() {
 		InputState state = inputManager.GetInputForController(getPlayerNumber());
-		move(getDirection(state));
+		try {
+			move(getDirection(state));
+		}
+		catch (CellOutOfBoundsException e) {
+			//TODO: Handle this
+		}
 	}
 
 	private Direction getDirection(InputState state) {

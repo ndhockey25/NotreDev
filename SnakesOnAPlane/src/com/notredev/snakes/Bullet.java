@@ -13,7 +13,7 @@ public class Bullet extends Actor {
 
 	@Override
 	public void update() {
-		GameBoardCell nextCell = cells.getFirst().getNextGameBoardCell(direction);
+		GameBoardCell nextCell = gameBoard.getNextCell(cells.getFirst(), direction);
 		if (nextCell != null) { // If the next cell is not out of bounds
 			addCellFront(nextCell);
 		}

@@ -1,17 +1,14 @@
 package com.notredev.snakes;
 
-import java.util.Collection;
 import java.util.LinkedList;
-
-import android.util.Log;
 
 public class GameBoardCell 
 {
 	GameBoard gameBoard = GameBoard.Instance();
 	public enum Occupant{SNAKE, SNAKE_HEAD, RATTLE, FOOD, OBSTACLE, BULLETBILL, NOTHING};
 	private LinkedList<Actor> actors = new LinkedList<Actor>();
-	int positionX;
-	int positionY;
+	private int positionX;
+	private int positionY;
 	boolean isAvailable = true;
 	
 	public GameBoardCell(int posX, int posY)
@@ -54,37 +51,6 @@ public class GameBoardCell
 
 	public void setAvailable(boolean isAvailable) {
 		this.isAvailable = isAvailable;
-	}
-	
-	protected GameBoardCell getNextGameBoardCell(Direction direction) {
-		int nextRow = positionX;
-		int nextColumn = positionY;
-
-		switch (direction) {
-        	case UP:
-        		nextRow--;
-        		break;
-        	case DOWN:
-        		nextRow++;
-        		break;
-        	case LEFT:
-        		nextColumn--;
-        		break;
-        	case RIGHT:
-        		nextColumn++;
-        		break;
-		}
-
-		
-		GameBoardCell nextCell = null;
-		try {
-			nextCell = gameBoard.getCell(nextRow, nextColumn);
-		}
-		catch (CellOutOfBoundsException e) {
-			Log.e("getCell", e.toString());
-		}
-		
-		return nextCell;
 	}
 
 	@Override
