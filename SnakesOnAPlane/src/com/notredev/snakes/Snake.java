@@ -3,7 +3,6 @@ package com.notredev.snakes;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-import android.graphics.Path.Direction;
 
 public class Snake extends Actor {
 
@@ -55,7 +54,7 @@ public class Snake extends Actor {
         		break;
 		}
 		
-		GameBoardCell nextCell = gameBoard.getCell(nextRow, nextColumn);
+		GameBoardCell nextCell = GameBoard.Instance().getCell(nextRow, nextColumn);
 	}
 	
 	public Direction getDirection(InputState state) {

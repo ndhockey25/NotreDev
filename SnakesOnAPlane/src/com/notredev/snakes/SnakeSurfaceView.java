@@ -3,7 +3,6 @@ package com.notredev.snakes;
 import com.amazon.device.gamecontroller.GameController;
 import com.amazon.device.gamecontroller.GameController.PlayerNumberNotFoundException;
 import com.firebase.client.Firebase;
-import com.notredev.snakes.Actor.ActorType;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -136,7 +135,7 @@ int derp=0;
 	        canvasHeight = canvas.getHeight();
 	        
 	        paint.setStyle(Paint.Style.STROKE);
-	        paint.setStrokeWidth(1);
+	        paint.setStrokeWidth(10);
 	        
 	        if(derp++>=GameBoard.Instance().gameBoardCells.length)
 	        	derp=0;
@@ -163,7 +162,7 @@ int derp=0;
 		        		paint.setColor(Color.RED);
 		        		break;
 		        	case OBSTACLE:
-		        		paint.setColor(Color.GRAY);
+		        		paint.setColor(Color.BLUE);
 		        		break;
 		        	case BULLET:
 		        		paint.setColor(Color.BLUE);
@@ -172,13 +171,14 @@ int derp=0;
 		        		paint.setColor(Color.WHITE);
 		        		break;
 		        	}
+		        	//canvas.drawRect(posX-gridWidth/2.0f+1, posY-gridHeight/2.0f+1, posX+gridWidth/2.0f-1, posY+gridHeight/2.0f-1, paint);
+		        	
 	        	}
 	        	else
 	        	{
 	        		paint.setColor(Color.WHITE);
 	        	}
-	        	int posX = (i % GameBoard.Instance().MAX_COLUMNS) * gridWidth + gridWidth/2;
-	        	int posY = ((int)i/GameBoard.Instance().MAX_COLUMNS) * gridHeight + gridHeight/2;
+	        	canvas.drawPoint(posX, posY, paint);
 	        }
 	        
 	        paint.setStyle(Paint.Style.STROKE);
