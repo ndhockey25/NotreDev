@@ -23,7 +23,9 @@ public class GameBoard {
 		gameBoardCells = new GameBoardCell[MAX_ROWS*MAX_COLUMNS];
 		for(int i=0; i<gameBoardCells.length; i++)
 		{
-			gameBoardCells[i] = new GameBoardCell();
+			int posX = i % MAX_COLUMNS;
+			int posY = i/MAX_COLUMNS;
+			gameBoardCells[i] = new GameBoardCell(posX, posY);
 		}
 		//initialize list of actors for game
 		listOfActors = new java.util.ArrayList<Actor>();

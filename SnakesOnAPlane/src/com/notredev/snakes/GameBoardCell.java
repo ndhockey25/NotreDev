@@ -8,10 +8,10 @@ public class GameBoardCell
 	int positionY;
 	boolean isAvailable;
 	
-	public GameBoardCell()
+	public GameBoardCell(int posX, int posY)
 	{
-		positionX = 0;
-		positionY = 0;
+		positionX = posX;
+		positionY = posY;
 		isAvailable = true;
 		listOfActors = new java.util.ArrayList<Actor>();
 	}

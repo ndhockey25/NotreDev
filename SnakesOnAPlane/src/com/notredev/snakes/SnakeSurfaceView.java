@@ -71,11 +71,14 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
             }
         }
     }
-int derp=0;
+
+    int derp=0;
+    PlayerSnake snake;
     
     public void update(){
-        //Update the actors
-         
+        //Update the actors 
+    	snake.update();
+    	
         //Update the gameboard
     	
         // Iterate through all players
@@ -130,22 +133,22 @@ int derp=0;
     	if (surfaceHolder.getSurface().isValid()) 
     	{
 	        Canvas canvas = surfaceHolder.lockCanvas();
-	        canvas.drawColor(Color.BLACK);
+	        canvas.drawColor(Color.WHITE);
 	        canvasWidth = canvas.getWidth();
 	        canvasHeight = canvas.getHeight();
 	        
 	        paint.setStyle(Paint.Style.STROKE);
 	        paint.setStrokeWidth(10);
 	        
-	        if(derp++>=GameBoard.Instance().gameBoardCells.length)
-	        	derp=0;
-	        java.util.LinkedList<GameBoardCell> tempCells = new java.util.LinkedList<GameBoardCell>();
-	        tempCells.add(GameBoard.Instance().gameBoardCells[derp]);
-	        Obstacle temp = new Obstacle(tempCells);
-	        GameBoard.Instance().gameBoardCells[derp].listOfActors.add(temp);
+	        //if(derp++>=GameBoard.Instance().gameBoardCells.length)
+	        //	derp=0;
+	        //java.util.LinkedList<GameBoardCell> tempCells = new java.util.LinkedList<GameBoardCell>();
+	        //tempCells.add(GameBoard.Instance().gameBoardCells[derp]);
+	        //Obstacle temp = new Obstacle(tempCells);
+	        //GameBoard.Instance().gameBoardCells[derp].listOfActors.add(temp);
 	        
 	        //canvas.drawLine(0, 0, canvasWidth/gameBoard.MAX_COLUMNS, canvasHeight/gameBoard.MAX_ROWS, paint);
-	        paint.setColor(Color.WHITE);
+	        paint.setColor(Color.BLACK);
 	        int xPos = 0;
 	        int yPos = 0;
 	        int gridWidth = canvasWidth/GameBoard.Instance().MAX_COLUMNS;
@@ -156,29 +159,49 @@ int derp=0;
 	        	int posY = ((int)i/GameBoard.Instance().MAX_COLUMNS) * gridHeight + gridHeight/2;
 	        	if(GameBoard.Instance().gameBoardCells[i].listOfActors.size() > 0)
 	        	{
-		        	switch(GameBoard.Instance().gameBoardCells[i].listOfActors.get(0).getType())
+	        		Actor actor = GameBoard.Instance().gameBoardCells[i].listOfActors.get(0);
+		        	switch(actor.getType())
 		        	{
 		        	case SNAKE:
-		        		paint.setColor(Color.RED);
+		        		Snake snake = (Snake)actor;
+		        		switch(snake.playerNumber)
+		        		{
+		        		case 0:
+		        			paint.setColor(Color.GREEN);
+		        			break;
+		        		case 1:
+		        			paint.setColor(Color.BLUE);
+		        			break;
+		        		case 2:
+		        			paint.setColor(Color.YELLOW);
+		        			break;
+		        		case 3:
+		        			paint.setColor(Color.MAGENTA);
+		        			break;
+		        		case 4:
+		        			paint.setColor(Color.CYAN);
+		        			break;
+		        		}
 		        		break;
 		        	case OBSTACLE:
-		        		paint.setColor(Color.BLUE);
+		        		paint.setColor(Color.GRAY);
 		        		break;
 		        	case BULLET:
-		        		paint.setColor(Color.BLUE);
+		        		paint.setColor(Color.BLACK);
+		        		break;
+		        	case FOOD:
+		        		paint.setColor(Color.RED);
 		        		break;
 		        	default:
 		        		paint.setColor(Color.WHITE);
 		        		break;
 		        	}
-		        	//canvas.drawRect(posX-gridWidth/2.0f+1, posY-gridHeight/2.0f+1, posX+gridWidth/2.0f-1, posY+gridHeight/2.0f-1, paint);
-		        	
+		        	canvas.drawPoint(posX, posY, paint);
 	        	}
 	        	else
 	        	{
-	        		paint.setColor(Color.WHITE);
+	        		paint.setColor(Color.BLACK);
 	        	}
-	        	canvas.drawPoint(posX, posY, paint);
 	        }
 	        
 	        paint.setStyle(Paint.Style.STROKE);
@@ -204,6 +227,9 @@ int derp=0;
      */
     @Override
     public void run() {
+    	snake = new PlayerSnake(GameBoard.Instance().getCell(5, 5), 0);
+    	GameBoard.Instance().getListOfActors().add(snake);
+    	
         while(running){
         	//TODO: input manager update if we need it
         	//TODO: menu logic goes around the below 2 call
@@ -212,7 +238,7 @@ int derp=0;
         	
             // Wait the equivalent of one frame at 60fps
             try {
-                Thread.sleep(1);
+                Thread.sleep(100);
             }
             catch (InterruptedException e) {
                 e.printStackTrace();
