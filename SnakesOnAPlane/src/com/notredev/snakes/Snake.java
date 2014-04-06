@@ -2,13 +2,14 @@ package com.notredev.snakes;
 
 public abstract class Snake extends Actor {
 
-	int playerNumber;
+	private int playerNumber;
 	Direction currentDirection;
-	boolean growOnNextMove = false; // Indicates if the snake should grow on his next move
+	private boolean growOnNextMove = false; // Indicates if the snake should grow on his next move
+	private boolean isAlive = true;
 	
-	public Snake(GameBoardCell snakeHeadGameBoardCell, int playerNumber) {
+	public Snake(GameBoardCell snakeHeadCell, int playerNumber) {
 		super(ActorType.SNAKE);
-		addCellBack(snakeHeadGameBoardCell);
+		addCellBack(snakeHeadCell);
 		// TODO: Give snake a body
 		
 		this.playerNumber = playerNumber;
@@ -20,13 +21,17 @@ public abstract class Snake extends Actor {
 		return playerNumber;
 	}
 	
-	public GameBoardCell getHeadGameCell() {
+	public GameBoardCell getHeadCell() {
 		return cells.getFirst();
+	}
+	
+	public void setGrowOnNextMove(boolean growOnNextMove) {
+		this.growOnNextMove = growOnNextMove;
 	}
 	
 	protected void move(Direction direction) throws CellOutOfBoundsException {		
 		currentDirection = direction;
-		GameBoardCell nextCell = gameBoard.getNextCell(getHeadGameCell(), direction);
+		GameBoardCell nextCell = gameBoard.getNextCell(getHeadCell(), direction);
 		
 		addCellFront(nextCell);
 
@@ -52,6 +57,14 @@ public abstract class Snake extends Actor {
 		}
 		
 		return obstacle;
+	}
+	
+	public void die()
+	{
+		isAlive = false;
+		while(!getCells().isEmpty()) {
+			removeCellBack();
+		}
 	}
 	
 }

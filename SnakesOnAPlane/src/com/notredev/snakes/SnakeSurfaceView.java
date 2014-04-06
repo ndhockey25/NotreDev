@@ -156,7 +156,7 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
 		        	{
 		        	case SNAKE:
 		        		Snake snake = (Snake)actor;
-		        		switch(snake.playerNumber)
+		        		switch(snake.getPlayerNumber())
 		        		{
 		        		case 0:
 		        			paint.setColor(Color.GREEN);

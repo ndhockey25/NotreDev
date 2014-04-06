@@ -1,5 +1,13 @@
 package com.notredev.snakes;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import com.notredev.snakes.Actor.ActorType;
+
 import android.util.Log;
 
 public class GameBoard {
@@ -136,14 +144,68 @@ public class GameBoard {
 	
 	private GameBoardCell resolveConflicts(GameBoardCell cell)
 	{
-		//check for 
-		//snake head & snake body
-		//snake head and obstacle
-		//snake head & food
-		for(Actor actor : listOfActors)
-		{
-			
+		Map<ActorType, List<Actor>> actors = new HashMap<ActorType, List<Actor>>();
+		for (Actor actor : cell.getActors()) {
+			if (!actors.containsKey(actor.getType())) {
+				actors.put(actor.getType(), new LinkedList<Actor>());
+			}
+			actors.get(actor.getType()).add(actor);
 		}
+		
+		// Check for snake head and food overlap
+		if (actors.containsKey(ActorType.FOOD) && actors.containsKey(ActorType.SNAKE)) {
+			// For each snake on the food square, make him grow on his next move
+			for (Actor snakeActor : actors.get(ActorType.SNAKE)) {
+				Snake snake = (Snake)snakeActor;
+				if (snake.getHeadCell().equals(cell)) {
+					snake.setGrowOnNextMove(true);
+				}
+			}
+			for (Actor foodActor : cell.getActors()) {
+				cell.removeActor(foodActor);
+			}
+		}
+		
+		// Check for snake head and obstacle overlap
+		if (actors.containsKey(ActorType.OBSTACLE) && actors.containsKey(ActorType.SNAKE)) {
+			for (Actor snakeActor : actors.get(ActorType.SNAKE)) {
+				Snake snake = (Snake)snakeActor;
+				if(snake.getHeadCell().equals(cell)) { // A body part should never hit an obstacle
+					snake.die();
+				}	
+			}
+		}	
+		
+		// Check for multiple snake overlap
+		if (actors.containsKey(ActorType.SNAKE)) {
+			if (actors.get(ActorType.SNAKE).size() > 1) { // If there is more than one snake in the cell
+				HashSet<Snake> snakeHeads = new HashSet<Snake>();
+				for (Actor actor : cell.getActors()) {
+					Snake snake = (Snake)actor;
+					if (snake.getHeadCell().equals(cell)) {
+						snakeHeads.add(snake);
+					}
+				}
+				// Any snake whose head overlaps another snake should die
+				for (Snake snake : snakeHeads) {
+					snake.die();
+				}
+				
+			}
+		}
+		
+		// Check for bullet and food overlap
+		if (actors.containsKey(ActorType.BULLET) && actors.containsKey(ActorType.FOOD)) {
+			// There should only be one food item, but loop in case there is not
+			for (Actor foodActor : cell.getActors()) {
+				cell.removeActor(foodActor);
+			}
+		}
+		
+		
+		// Bullets and snakes
+		
+		// Bullets and bullets
 		
 		return cell;
 	}
