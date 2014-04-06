@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 
-public class Snake extends Actor {
+public abstract class Snake extends Actor {
 
 	InputManager inputManager = InputManager.Instance();
 	GameBoard gameBoard = GameBoard.Instance();
@@ -26,7 +26,9 @@ public class Snake extends Actor {
 		return getActorCells().getFirst();
 	}
 	
-	public void move(Direction direction) {		
+	public abstract void update();
+	
+	protected void move(Direction direction) {		
 		int nextRow = getHeadGameCell().positionX;
 		int nextColumn = getHeadGameCell().positionY;
 		
@@ -62,7 +64,7 @@ public class Snake extends Actor {
 		setActorCells(body);
 	}
 	
-	public Direction getDirection(InputState state) {
+	protected Direction getDirection(InputState state) {
 		if (!(state.Up() ^ state.Down() ^ state.Left() ^ state.Right())) {
 			// If multiple directions are pressed, continue in the current direction
 			return currentDirection; 
