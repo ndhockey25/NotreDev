@@ -3,12 +3,11 @@ package com.notredev.snakes;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-import android.graphics.Path.Direction;
 
 public class Snake extends Actor {
 
 	InputManager inputManager = InputManager.Instance();
-	GameBoard gameBoard = new GameBoard();
+	GameBoard gameBoard = GameBoard.Instance();
 	Direction currentDirection;
 	boolean growOnNextMove = false; // Indicates if the snake should grow on his next move
 	int playerNumber;
@@ -32,7 +31,7 @@ public class Snake extends Actor {
 		int nextColumn = getHeadGameCell().positionY;
 		
 		currentDirection = direction;
-		
+
 		switch (direction) {
         	case UP:
         		nextRow = getHeadGameCell().positionX - 1;
@@ -65,23 +64,6 @@ public class Snake extends Actor {
 		}
 		
 		setActorCells(body);
-	}
-	
-	/**
-	 * Returns true if the snake is still alive
-	 */
-	public boolean validateMove() {
-		GameBoardCell headCell = getHeadGameCell();
-		Collection<GameBoadCell> cellActors = headCell.getActors();
-		for (Actor actor : cellActors) {
-			if (actor.getType() == ActorType.FOOD) {
-				growOnNextMove = true;
-			}
-			elif (actor.getType() == ActorType.SNAKE) {
-				
-			}
-		}
-		
 	}
 	
 	public Direction getDirection(InputState state) {
@@ -123,6 +105,10 @@ public class Snake extends Actor {
 		}
 		
 		return new Obstacle(obstacleCells);
+	}
+	
+	public int getPlayerNumber() {
+		return playerNumber;
 	}
 	
 }
