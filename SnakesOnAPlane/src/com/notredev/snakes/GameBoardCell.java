@@ -3,7 +3,7 @@ package com.notredev.snakes;
 public class GameBoardCell 
 {
 	public enum Occupant{SNAKE, SNAKE_HEAD, RATTLE, FOOD, OBSTACLE, BULLETBILL, NOTHING};
-	public java.util.List<Occupant> listOfOccupants;
+	public java.util.List<Actor> listOfActors;
 	int positionX;
 	int positionY;
 	boolean isAvailable;
@@ -13,15 +13,15 @@ public class GameBoardCell
 		positionX = 0;
 		positionY = 0;
 		isAvailable = true;
-		listOfOccupants = new java.util.ArrayList<Occupant>();
+		listOfActors = new java.util.ArrayList<Actor>();
 	}
 
-	public java.util.List<Occupant> getListOfOccupants() {
-		return listOfOccupants;
+	public java.util.List<Actor> getListOfActors() {
+		return listOfActors;
 	}
 
-	public void setListOfOccupants(java.util.List<Occupant> listOfOccupants) {
-		this.listOfOccupants = listOfOccupants;
+	public void setListOfActors(java.util.List<Actor> listOfActors) {
+		this.listOfActors = listOfActors;
 	}
 
 	public int getPositionX() {

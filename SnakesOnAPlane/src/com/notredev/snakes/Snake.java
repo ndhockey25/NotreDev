@@ -85,7 +85,6 @@ public class Snake extends Actor {
 		}
 		return currentDirection; // Default to the direction the snake is already moving
 	}
-	
 	public Obstacle split(GameBoardCell splitCell) {
 		LinkedList<GameBoardCell> obstacleCells = new LinkedList<GameBoardCell>();
 		

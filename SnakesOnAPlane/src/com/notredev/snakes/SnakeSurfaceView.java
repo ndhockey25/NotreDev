@@ -71,13 +71,13 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
             }
         }
     }
-
+int derp=0;
     
     public void update(){
         //Update the actors
-        
+         
         //Update the gameboard
-        
+    	
         // Iterate through all players
         for (int n = 0; n < GameController.MAX_PLAYERS; n++) {
             GameController gameController = null;
@@ -129,18 +129,22 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
     {
     	if (surfaceHolder.getSurface().isValid()) 
     	{
-	    	
 	        Canvas canvas = surfaceHolder.lockCanvas();
+	        canvas.drawColor(Color.BLACK);
 	        canvasWidth = canvas.getWidth();
 	        canvasHeight = canvas.getHeight();
 	        
-	        canvas.drawColor(Color.BLACK);
-	        
 	        paint.setStyle(Paint.Style.STROKE);
-	        paint.setStrokeWidth(1);
+	        paint.setStrokeWidth(10);
+	        
+	        if(derp++>=GameBoard.Instance().gameBoardCells.length)
+	        	derp=0;
+	        java.util.LinkedList<GameBoardCell> tempCells = new java.util.LinkedList<GameBoardCell>();
+	        tempCells.add(GameBoard.Instance().gameBoardCells[derp]);
+	        Obstacle temp = new Obstacle(tempCells);
+	        GameBoard.Instance().gameBoardCells[derp].listOfActors.add(temp);
 	        
 	        //canvas.drawLine(0, 0, canvasWidth/gameBoard.MAX_COLUMNS, canvasHeight/gameBoard.MAX_ROWS, paint);
-	        
 	        paint.setColor(Color.WHITE);
 	        int xPos = 0;
 	        int yPos = 0;
@@ -150,16 +154,37 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
 	        {
 	        	int posX = (i % GameBoard.Instance().MAX_COLUMNS) * gridWidth + gridWidth/2;
 	        	int posY = ((int)i/GameBoard.Instance().MAX_COLUMNS) * gridHeight + gridHeight/2;
-	
-	        	canvas.drawRect(posX-gridWidth/2.0f+1, posY-gridHeight/2.0f+1, 
-	        			posX+gridWidth/2.0f-1, posY+gridHeight/2.0f-1, paint);
+	        	if(GameBoard.Instance().gameBoardCells[i].listOfActors.size() > 0)
+	        	{
+		        	switch(GameBoard.Instance().gameBoardCells[i].listOfActors.get(0).getType())
+		        	{
+		        	case SNAKE:
+		        		paint.setColor(Color.RED);
+		        		break;
+		        	case OBSTACLE:
+		        		paint.setColor(Color.BLUE);
+		        		break;
+		        	case BULLET:
+		        		paint.setColor(Color.BLUE);
+		        		break;
+		        	default:
+		        		paint.setColor(Color.WHITE);
+		        		break;
+		        	}
+		        	//canvas.drawRect(posX-gridWidth/2.0f+1, posY-gridHeight/2.0f+1, posX+gridWidth/2.0f-1, posY+gridHeight/2.0f-1, paint);
+		        	
+	        	}
+	        	else
+	        	{
+	        		paint.setColor(Color.WHITE);
+	        	}
+	        	canvas.drawPoint(posX, posY, paint);
 	        }
 	        
 	        paint.setStyle(Paint.Style.STROKE);
 	        paint.setStrokeWidth(8);
 	        
 	        
-	
 	        for (int n = 0; n < GameController.MAX_PLAYERS; n++) {
 	
 		        // Draw a spot for that player
@@ -187,7 +212,7 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
         	
             // Wait the equivalent of one frame at 60fps
             try {
-                Thread.sleep(17);
+                Thread.sleep(1);
             }
             catch (InterruptedException e) {
                 e.printStackTrace();
