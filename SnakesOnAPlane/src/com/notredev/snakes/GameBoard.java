@@ -61,8 +61,27 @@ public class GameBoard {
 	{
 		//loop Actors, and populate cells that are occupied by actors
 		java.util.List<GameBoardCell> listOfActorCells = new java.util.ArrayList<GameBoardCell>();
+		java.util.List<GameBoardCell> listOfConflictCells = new java.util.ArrayList<GameBoardCell>();
+		for(int i = 0; i<listOfActors.size();i++)
+		{
+			for(GameBoardCell cell : listOfActors.get(i).getActorCells())
+			{
+				listOfActorCells.add(cell);
+			}
+		}
 		//loop Actor cells and resolve conflicts in those cells
+		for(GameBoardCell cell : listOfActorCells)
+		{
+			if(cell.listOfActors.size() > 1)
+			{
+				listOfConflictCells.add(resolveConflicts(cell));
+			}
+		}
 		//create a set of new cells that resulted from the conflicts, and add them afterwards
+		for(GameBoardCell cell : listOfConflictCells)
+		{
+			GameBoard.Instance().putCell(cell);
+		}
 		//after this, we will draw
 	}
 	
@@ -75,5 +94,24 @@ public class GameBoard {
 		}
 		int index = MAX_COLUMNS*row + column;
 		return gameBoardCells[index];
+	}
+	
+	public void putCell(GameBoardCell cell)
+	{
+		gameBoardCells[(cell.positionY * MAX_COLUMNS) + cell.positionX] = cell;
+	}
+	
+	private GameBoardCell resolveConflicts(GameBoardCell cell)
+	{
+		//check for 
+		//snake head & snake body
+		//snake head and obstacle
+		//snake head & food
+		for(Actor actor : listOfActors)
+		{
+			
+		}
+		
+		return cell;
 	}
 }
