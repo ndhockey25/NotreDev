@@ -34,20 +34,16 @@ public class Snake extends Actor {
 
 		switch (direction) {
         	case UP:
-        		nextRow = getHeadGameCell().positionX - 1;
-        		nextColumn = getHeadGameCell().positionY;
+        		nextRow--;
         		break;
         	case DOWN:
-        		nextRow = getHeadGameCell().positionX + 1;
-        		nextColumn = getHeadGameCell().positionY;
+        		nextRow++;
         		break;
         	case LEFT:
-        		nextRow = getHeadGameCell().positionX;
-        		nextColumn = getHeadGameCell().positionY - 1;
+        		nextColumn--;
         		break;
         	case RIGHT:
-        		nextRow = getHeadGameCell().positionX;
-        		nextColumn = getHeadGameCell().positionY + 1;
+        		nextColumn++;
         		break;
 		}
 		
