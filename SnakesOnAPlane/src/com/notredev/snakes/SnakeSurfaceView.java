@@ -1,5 +1,7 @@
 package com.notredev.snakes;
 
+import java.util.Random;
+
 import com.amazon.device.gamecontroller.GameController;
 import com.amazon.device.gamecontroller.GameController.PlayerNumberNotFoundException;
 import com.firebase.client.Firebase;
@@ -74,12 +76,13 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
     
     public void update(){
         //Update the actors
-    	snake0.update();
-    	snake1.update();
-    	snake2.update();
-    	snake3.update();
+    	for(Actor actor : GameBoard.Instance().listOfActors)
+    	{
+    		actor.update();
+    	}
     	
         //Update the gameboard
+    	GameBoard.Instance().updateOccupants();
     	
         // Iterate through all players
         for (int n = 0; n < GameController.MAX_PLAYERS; n++) {
@@ -138,7 +141,7 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
 	        canvasHeight = canvas.getHeight();
 	        
 	        paint.setStyle(Paint.Style.STROKE);
-	        paint.setStrokeWidth(10);
+	        paint.setStrokeWidth(15);
 	        
 	        paint.setColor(Color.BLACK);
 	        int xPos = 0;
@@ -214,35 +217,23 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
 	    }
     }
 
-    java.util.ArrayList<PlayerSnake> snakes = new java.util.ArrayList<PlayerSnake>();
-    PlayerSnake snake0;
-    PlayerSnake snake1;
-    PlayerSnake snake2;
-    PlayerSnake snake3;
-    Food food;
-    
     /*
      * This runs
      */
     @Override
     public void run() {
-    	snake0 = new PlayerSnake(GameBoard.Instance().getCell(5, 5), 0);
-    	GameBoard.Instance().getListOfActors().add(snake0);
+    	Random r = new Random();
+    	for(int i=0; i< GameController.MAX_PLAYERS;i++)
+    	{
+    		GameBoard.Instance().getListOfActors().add(new PlayerSnake(GameBoard.Instance().getCell(i*5, i*5), i));
+    	}
     	
-    	snake1 = new PlayerSnake(GameBoard.Instance().getCell(10, 10), 1);
-    	GameBoard.Instance().getListOfActors().add(snake1);
-    	
-    	snake2 = new PlayerSnake(GameBoard.Instance().getCell(15, 15), 2);
-    	GameBoard.Instance().getListOfActors().add(snake2);
-    	
-    	snake3 = new PlayerSnake(GameBoard.Instance().getCell(20, 20), 3);
-    	GameBoard.Instance().getListOfActors().add(snake3);
-    	
-    	food = new Food(GameBoard.Instance().getCell(30, 30));
-    	GameBoard.Instance().getListOfActors().add(food);
+    	for(int i=0; i< 20;i++)
+    	{
+	    	GameBoard.Instance().getListOfActors().add(new Food(GameBoard.Instance().getCell(r.nextInt(GameBoard.Instance().MAX_ROWS), r.nextInt(GameBoard.Instance().MAX_COLUMNS))));
+    	}
     	
         while(running){
-        	//TODO: input manager update if we need it
         	//TODO: menu logic goes around the below 2 call
         	update();
         	draw();

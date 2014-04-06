@@ -28,8 +28,8 @@ public class GameBoard {
 	
 	private GameBoard()
 	{
-		MAX_ROWS = 68;
-		MAX_COLUMNS = 120;
+		MAX_ROWS = 43;
+		MAX_COLUMNS = 80;
 		gameBoardCells = new GameBoardCell[MAX_ROWS*MAX_COLUMNS];
 		for(int i=0; i<gameBoardCells.length; i++)
 		{
@@ -82,17 +82,8 @@ public class GameBoard {
 		//loop Actor cells and resolve conflicts in those cells
 		for(GameBoardCell cell : listOfActorCells)
 		{
-			if(cell.getActors().size() > 1)
-			{
-				listOfConflictCells.add(resolveConflicts(cell));
-			}
+			resolveConflicts(cell);
 		}
-		//create a set of new cells that resulted from the conflicts, and add them afterwards
-		for(GameBoardCell cell : listOfConflictCells)
-		{
-			GameBoard.Instance().putCell(cell);
-		}
-		//after this, we will draw
 	}
 	
 	public GameBoardCell getCell(int row, int column) throws CellOutOfBoundsException {
@@ -161,7 +152,7 @@ public class GameBoard {
 					snake.setGrowOnNextMove(true);
 				}
 			}
-			for (Actor foodActor : cell.getActors()) {
+			for (Actor foodActor : actors.get(ActorType.FOOD)) {
 				cell.removeActor(foodActor);
 			}
 		}
