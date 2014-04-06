@@ -2,9 +2,9 @@ package com.notredev.snakes;
 
 public abstract class Snake extends Actor {
 
-	int playerNumber;
+	private int playerNumber;
 	Direction currentDirection;
-	boolean growOnNextMove = false; // Indicates if the snake should grow on his next move
+	private boolean growOnNextMove = false; // Indicates if the snake should grow on his next move
 	
 	public Snake(GameBoardCell snakeHeadGameBoardCell, int playerNumber) {
 		super(ActorType.SNAKE);
@@ -22,6 +22,10 @@ public abstract class Snake extends Actor {
 	
 	public GameBoardCell getHeadGameCell() {
 		return cells.getFirst();
+	}
+	
+	public void setGrowOnNextMove(boolean growOnNextMove) {
+		this.growOnNextMove = growOnNextMove;
 	}
 	
 	protected void move(Direction direction) throws CellOutOfBoundsException {		

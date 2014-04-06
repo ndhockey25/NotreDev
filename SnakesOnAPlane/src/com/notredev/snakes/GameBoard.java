@@ -1,5 +1,12 @@
 package com.notredev.snakes;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import com.notredev.snakes.Actor.ActorType;
+
 import android.util.Log;
 
 public class GameBoard {
@@ -136,14 +143,31 @@ public class GameBoard {
 	
 	private GameBoardCell resolveConflicts(GameBoardCell cell)
 	{
+		Map<ActorType, List<Actor>> actors = new HashMap<ActorType, List<Actor>>();
+		for (Actor actor : cell.getActors()) {
+			if (!actors.containsKey(actor.getType())) {
+				actors.put(actor.getType(), new LinkedList<Actor>());
+			}
+			actors.get(actor.getType()).add(actor);
+		}
+		
 		//check for 
 		//snake head & snake body
 		//snake head and obstacle
 		//snake head & food
-		for(Actor actor : listOfActors)
-		{
-			
+		if (actors.containsKey(ActorType.FOOD) && actors.containsKey(ActorType.SNAKE)) {
+			// TODO: Handle collisions of snake heads
+			// For each snake on the food square, make him grow on his next move
+			for (Actor snakeActor : actors.get(ActorType.SNAKE)) {
+				((Snake)snakeActor).setGrowOnNextMove(true);
+			}
+			for (Actor foodActor : cell.getActors()) {
+				cell.removeActor(foodActor);
+			}
 		}
+		
+		
+		
 		
 		return cell;
 	}
