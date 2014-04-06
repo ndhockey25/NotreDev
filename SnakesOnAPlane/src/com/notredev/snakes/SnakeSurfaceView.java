@@ -71,13 +71,13 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
             }
         }
     }
-
-    int derp=0;
-    PlayerSnake snake;
     
     public void update(){
-        //Update the actors 
-    	snake.update();
+        //Update the actors
+    	snake0.update();
+    	snake1.update();
+    	snake2.update();
+    	snake3.update();
     	
         //Update the gameboard
     	
@@ -123,7 +123,7 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
                                 : 0;
                 final String xVal = Integer.toString(x[n]);
                 final String yVal = Integer.toString(y[n]);
-                mFirebaseRoot.child(xVal + ":" + yVal).setValue(true);
+                //mFirebaseRoot.child(xVal + ":" + yVal).setValue(true);
             }
         }
     }
@@ -140,14 +140,6 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
 	        paint.setStyle(Paint.Style.STROKE);
 	        paint.setStrokeWidth(10);
 	        
-	        //if(derp++>=GameBoard.Instance().gameBoardCells.length)
-	        //	derp=0;
-	        //java.util.LinkedList<GameBoardCell> tempCells = new java.util.LinkedList<GameBoardCell>();
-	        //tempCells.add(GameBoard.Instance().gameBoardCells[derp]);
-	        //Obstacle temp = new Obstacle(tempCells);
-	        //GameBoard.Instance().gameBoardCells[derp].listOfActors.add(temp);
-	        
-	        //canvas.drawLine(0, 0, canvasWidth/gameBoard.MAX_COLUMNS, canvasHeight/gameBoard.MAX_ROWS, paint);
 	        paint.setColor(Color.BLACK);
 	        int xPos = 0;
 	        int yPos = 0;
@@ -221,14 +213,33 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
 	        surfaceHolder.unlockCanvasAndPost(canvas);
 	    }
     }
+
+    java.util.ArrayList<PlayerSnake> snakes = new java.util.ArrayList<PlayerSnake>();
+    PlayerSnake snake0;
+    PlayerSnake snake1;
+    PlayerSnake snake2;
+    PlayerSnake snake3;
+    Food food;
     
     /*
      * This runs
      */
     @Override
     public void run() {
-    	snake = new PlayerSnake(GameBoard.Instance().getCell(5, 5), 0);
-    	GameBoard.Instance().getListOfActors().add(snake);
+    	snake0 = new PlayerSnake(GameBoard.Instance().getCell(5, 5), 0);
+    	GameBoard.Instance().getListOfActors().add(snake0);
+    	
+    	snake1 = new PlayerSnake(GameBoard.Instance().getCell(10, 10), 1);
+    	GameBoard.Instance().getListOfActors().add(snake1);
+    	
+    	snake2 = new PlayerSnake(GameBoard.Instance().getCell(15, 15), 2);
+    	GameBoard.Instance().getListOfActors().add(snake2);
+    	
+    	snake3 = new PlayerSnake(GameBoard.Instance().getCell(20, 20), 3);
+    	GameBoard.Instance().getListOfActors().add(snake3);
+    	
+    	food = new Food(GameBoard.Instance().getCell(30, 30));
+    	GameBoard.Instance().getListOfActors().add(food);
     	
         while(running){
         	//TODO: input manager update if we need it
