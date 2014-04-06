@@ -53,6 +53,8 @@ public class GameBoardCell
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (isAvailable ? 1231 : 1237);
+		result = prime * result
+				+ ((listOfActors == null) ? 0 : listOfActors.hashCode());
 		result = prime * result + positionX;
 		result = prime * result + positionY;
 		return result;
@@ -68,6 +70,11 @@ public class GameBoardCell
 			return false;
 		GameBoardCell other = (GameBoardCell) obj;
 		if (isAvailable != other.isAvailable)
+			return false;
+		if (listOfActors == null) {
+			if (other.listOfActors != null)
+				return false;
+		} else if (!listOfActors.equals(other.listOfActors))
 			return false;
 		if (positionX != other.positionX)
 			return false;
