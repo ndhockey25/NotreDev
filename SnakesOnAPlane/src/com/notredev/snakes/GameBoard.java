@@ -10,9 +10,9 @@ public class GameBoard {
 	
 	public GameBoard()
 	{
-		gameBoardCells = new GameBoardCell[90*160];
-		MAX_ROWS = 135;
-		MAX_COLUMNS = 240;
+		MAX_ROWS = 68;
+		MAX_COLUMNS = 120;
+		gameBoardCells = new GameBoardCell[MAX_ROWS*MAX_COLUMNS];
 	}
 	
 	public GameBoardCell[] getGameBoardCells() {

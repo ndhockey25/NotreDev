@@ -29,8 +29,10 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
     // Store an X,Y out-of-boundary defaults for each of the 4 players
     int x[] = new int[] {-1, -1, -1, -1};
     int y[] = new int[] {-1, -1, -1, -1};
-    int canvasWidth;
-    int canvasHeight;
+    int canvasWidth = 1920;
+    int canvasHeight = 1080;
+    
+    public GameBoard gameBoard = new GameBoard();
 
     // Define a color for each player
     int colors[] = new int[] {Color.RED, Color.GREEN, Color.YELLOW, Color.MAGENTA};
@@ -74,10 +76,6 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
 
     
     public void update(){
-        if (!surfaceHolder.getSurface().isValid()) {
-        	return;
-        }
-
         //Update the actors
         
         //Update the gameboard
@@ -129,27 +127,53 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
         }
     }
     
-    public void draw(){
-        Canvas canvas = surfaceHolder.lockCanvas();
-        canvasWidth = canvas.getWidth();
-        canvasHeight = canvas.getHeight();
-        
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(8);
-        
-        canvas.drawColor(Color.BLACK);
-
-        for (int n = 0; n < GameController.MAX_PLAYERS; n++) {
-
-	        // Draw a spot for that player
-	        paint.setColor(colors[n]);
-	        canvas.drawPoint(x[n], y[n], paint);
-	        canvas.drawCircle(x[n], y[n], 20, paint);
-        }
-        
-        // Now pass over to the GPU for rendering.
-        GameController.startFrame();
-        surfaceHolder.unlockCanvasAndPost(canvas);
+    public void draw()
+    {
+    	if (surfaceHolder.getSurface().isValid()) 
+    	{
+	    	
+	        Canvas canvas = surfaceHolder.lockCanvas();
+	        canvasWidth = canvas.getWidth();
+	        canvasHeight = canvas.getHeight();
+	        
+	        canvas.drawColor(Color.BLACK);
+	        
+	        paint.setStyle(Paint.Style.STROKE);
+	        paint.setStrokeWidth(1);
+	        
+	        //canvas.drawLine(0, 0, canvasWidth/gameBoard.MAX_COLUMNS, canvasHeight/gameBoard.MAX_ROWS, paint);
+	        
+	        paint.setColor(Color.WHITE);
+	        int xPos = 0;
+	        int yPos = 0;
+	        int gridWidth = canvasWidth/gameBoard.MAX_COLUMNS;
+	        int gridHeight = canvasHeight/gameBoard.MAX_ROWS;
+	        for(int i=0; i<gameBoard.gameBoardCells.length; i++)
+	        {
+	        	int posX = (i % gameBoard.MAX_COLUMNS) * gridWidth + gridWidth/2;
+	        	int posY = ((int)i/gameBoard.MAX_COLUMNS) * gridHeight + gridHeight/2;
+	
+	        	canvas.drawRect(posX-gridWidth/2.0f+1, posY-gridHeight/2.0f+1, 
+	        			posX+gridWidth/2.0f-1, posY+gridHeight/2.0f-1, paint);
+	        }
+	        
+	        paint.setStyle(Paint.Style.STROKE);
+	        paint.setStrokeWidth(8);
+	        
+	        
+	
+	        for (int n = 0; n < GameController.MAX_PLAYERS; n++) {
+	
+		        // Draw a spot for that player
+		        paint.setColor(colors[n]);
+		        canvas.drawPoint(x[n], y[n], paint);
+		        canvas.drawCircle(x[n], y[n], 20, paint);
+	        }
+	        
+	        // Now pass over to the GPU for rendering.
+	        GameController.startFrame();
+	        surfaceHolder.unlockCanvasAndPost(canvas);
+	    }
     }
     
     /*
