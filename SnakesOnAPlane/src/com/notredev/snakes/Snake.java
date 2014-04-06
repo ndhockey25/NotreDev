@@ -7,26 +7,22 @@ public class Snake extends Actor {
 
 	InputManager inputManager = InputManager.Instance();
 	GameBoard gameBoard = new GameBoard();
-	
 	Direction currentDirection;
+	boolean growOnNextMove = false; // Indicates if the snake should grow on his next move
+	int playerNumber;
 	
-	public Snake(GameBoardCell snakeHeadGameBoardCell) {
+	public Snake(GameBoardCell snakeHeadGameBoardCell, int playerNumber) {
 		super(ActorType.SNAKE, null);
 		LinkedList<GameBoardCell> bodyParts = new LinkedList<GameBoardCell>();
 		bodyParts.add(snakeHeadGameBoardCell);
 		// TODO: Give snake a body
 		setActorCells(bodyParts);
+		
+		playerNumber = this.playerNumber;
 	}
 	
 	public GameBoardCell getHeadGameCell() {
 		return getActorCells().getFirst();
-	}
-	
-	/**
-	 * Move in the current direction
-	 */
-	public void move() {
-		move(currentDirection);
 	}
 	
 	public void move(Direction direction) {		
@@ -56,7 +52,34 @@ public class Snake extends Actor {
 		
 		GameBoardCell nextCell = gameBoard.getCell(nextRow, nextColumn);
 		
-		// TODO: Adjust LinkedList with new cells
+		LinkedList<GameBoardCell> body = getActorCells();
+		body.addFirst(nextCell);
+
+		if (growOnNextMove) {
+			growOnNextMove = false;
+		}
+		else {
+			body.pop();
+		}
+		
+		setActorCells(body);
+	}
+	
+	/**
+	 * Returns true if the snake is still alive
+	 */
+	public boolean validateMove() {
+		GameBoardCell headCell = getHeadGameCell();
+		Collection<GameBoadCell> cellActors = headCell.getActors();
+		for (Actor actor : cellActors) {
+			if (actor.getType() == ActorType.FOOD) {
+				growOnNextMove = true;
+			}
+			elif (actor.getType() == ActorType.SNAKE) {
+				
+			}
+		}
+		
 	}
 	
 	public Direction getDirection(InputState state) {
