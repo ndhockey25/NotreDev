@@ -2,6 +2,8 @@ package com.notredev.snakes;
 
 public class PlayerSnake extends Snake {
 
+	InputManager inputManager = InputManager.Instance();
+	
 	public PlayerSnake(GameBoardCell snakeHeadGameBoardCell, int playerNumber) {
 		super(snakeHeadGameBoardCell, playerNumber);
 	}
@@ -12,4 +14,24 @@ public class PlayerSnake extends Snake {
 		move(getDirection(state));
 	}
 
+	private Direction getDirection(InputState state) {
+		if (!(state.Up() ^ state.Down() ^ state.Left() ^ state.Right())) {
+			// If multiple directions are pressed, continue in the current direction
+			return currentDirection; 
+		}
+		if (state.Up()) {
+			return Direction.UP;
+		}
+		if (state.Down()) {
+			return Direction.DOWN;
+		}
+		if (state.Left()) {
+			return Direction.LEFT;
+		}
+		if (state.Right()) {
+			return Direction.RIGHT;
+		}
+		return currentDirection; // Default to the direction the snake is already moving
+	}
+	
 }

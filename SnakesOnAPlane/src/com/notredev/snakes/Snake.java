@@ -6,11 +6,10 @@ import java.util.ListIterator;
 
 public abstract class Snake extends Actor {
 
-	InputManager inputManager = InputManager.Instance();
 	GameBoard gameBoard = GameBoard.Instance();
+	int playerNumber;
 	Direction currentDirection;
 	boolean growOnNextMove = false; // Indicates if the snake should grow on his next move
-	int playerNumber;
 	
 	public Snake(GameBoardCell snakeHeadGameBoardCell, int playerNumber) {
 		super(ActorType.SNAKE, null);
@@ -24,11 +23,15 @@ public abstract class Snake extends Actor {
 		currentDirection = Direction.RIGHT;
 	}
 	
+	public abstract void update();
+	
+	public int getPlayerNumber() {
+		return playerNumber;
+	}
+	
 	public GameBoardCell getHeadGameCell() {
 		return getActorCells().getFirst();
 	}
-	
-	public abstract void update();
 	
 	protected void move(Direction direction) {		
 		int nextRow = getHeadGameCell().positionX;
@@ -66,25 +69,6 @@ public abstract class Snake extends Actor {
 		setActorCells(body);
 	}
 	
-	protected Direction getDirection(InputState state) {
-		if (!(state.Up() ^ state.Down() ^ state.Left() ^ state.Right())) {
-			// If multiple directions are pressed, continue in the current direction
-			return currentDirection; 
-		}
-		if (state.Up()) {
-			return Direction.UP;
-		}
-		if (state.Down()) {
-			return Direction.DOWN;
-		}
-		if (state.Left()) {
-			return Direction.LEFT;
-		}
-		if (state.Right()) {
-			return Direction.RIGHT;
-		}
-		return currentDirection; // Default to the direction the snake is already moving
-	}
 	public Obstacle split(GameBoardCell splitCell) {
 		LinkedList<GameBoardCell> obstacleCells = new LinkedList<GameBoardCell>();
 		
@@ -104,10 +88,6 @@ public abstract class Snake extends Actor {
 		}
 		
 		return new Obstacle(obstacleCells);
-	}
-	
-	public int getPlayerNumber() {
-		return playerNumber;
 	}
 	
 }
