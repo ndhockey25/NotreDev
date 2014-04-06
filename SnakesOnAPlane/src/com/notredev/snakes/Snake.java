@@ -3,6 +3,8 @@ package com.notredev.snakes;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
+import android.graphics.Path.Direction;
+
 public class Snake extends Actor {
 
 	InputManager inputManager = InputManager.Instance();

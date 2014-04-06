@@ -31,8 +31,6 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
     int y[] = new int[] {-1, -1, -1, -1};
     int canvasWidth = 1920;
     int canvasHeight = 1080;
-    
-    public GameBoard gameBoard = new GameBoard();
 
     // Define a color for each player
     int colors[] = new int[] {Color.RED, Color.GREEN, Color.YELLOW, Color.MAGENTA};
@@ -146,12 +144,12 @@ public class SnakeSurfaceView extends SurfaceView implements Runnable {
 	        paint.setColor(Color.WHITE);
 	        int xPos = 0;
 	        int yPos = 0;
-	        int gridWidth = canvasWidth/gameBoard.MAX_COLUMNS;
-	        int gridHeight = canvasHeight/gameBoard.MAX_ROWS;
-	        for(int i=0; i<gameBoard.gameBoardCells.length; i++)
+	        int gridWidth = canvasWidth/GameBoard.Instance().MAX_COLUMNS;
+	        int gridHeight = canvasHeight/GameBoard.Instance().MAX_ROWS;
+	        for(int i=0; i<GameBoard.Instance().gameBoardCells.length; i++)
 	        {
-	        	int posX = (i % gameBoard.MAX_COLUMNS) * gridWidth + gridWidth/2;
-	        	int posY = ((int)i/gameBoard.MAX_COLUMNS) * gridHeight + gridHeight/2;
+	        	int posX = (i % GameBoard.Instance().MAX_COLUMNS) * gridWidth + gridWidth/2;
+	        	int posY = ((int)i/GameBoard.Instance().MAX_COLUMNS) * gridHeight + gridHeight/2;
 	
 	        	canvas.drawRect(posX-gridWidth/2.0f+1, posY-gridHeight/2.0f+1, 
 	        			posX+gridWidth/2.0f-1, posY+gridHeight/2.0f-1, paint);

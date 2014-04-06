@@ -4,11 +4,17 @@ public class GameBoard {
 	
 	GameBoardCell[] gameBoardCells;
 
-
 	int MAX_ROWS;
 	int MAX_COLUMNS;
 	
-	public GameBoard()
+	private static GameBoard _gameBoard = new GameBoard();
+	
+	public static GameBoard Instance()
+	{
+		return _gameBoard;
+	}
+	
+	private GameBoard()
 	{
 		MAX_ROWS = 68;
 		MAX_COLUMNS = 120;
