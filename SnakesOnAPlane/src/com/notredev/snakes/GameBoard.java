@@ -152,50 +152,60 @@ public class GameBoard {
 			actors.get(actor.getType()).add(actor);
 		}
 		
-		//check for 
-		//snake head & snake body
-		//snake head and obstacle
-		//snake head & food
+		// Check for snake head and food overlap
 		if (actors.containsKey(ActorType.FOOD) && actors.containsKey(ActorType.SNAKE)) {
-			// TODO: Handle collisions of snake heads
 			// For each snake on the food square, make him grow on his next move
 			for (Actor snakeActor : actors.get(ActorType.SNAKE)) {
-				((Snake)snakeActor).setGrowOnNextMove(true);
+				Snake snake = (Snake)snakeActor;
+				if (snake.getHeadCell().equals(cell)) {
+					snake.setGrowOnNextMove(true);
+				}
 			}
 			for (Actor foodActor : cell.getActors()) {
 				cell.removeActor(foodActor);
 			}
 		}
 		
+		// Check for snake head and obstacle overlap
+		if (actors.containsKey(ActorType.OBSTACLE) && actors.containsKey(ActorType.SNAKE)) {
+			for (Actor snakeActor : actors.get(ActorType.SNAKE)) {
+				Snake snake = (Snake)snakeActor;
+				if(snake.getHeadCell().equals(cell)) { // A body part should never hit an obstacle
+					snake.die();
+				}	
+			}
+		}	
+		
+		// Check for multiple snake overlap
 		if (actors.containsKey(ActorType.SNAKE)) {
 			if (actors.get(ActorType.SNAKE).size() > 1) { // If there is more than one snake in the cell
 				HashSet<Snake> snakeHeads = new HashSet<Snake>();
-				HashSet<Snake> snakeBodies = new HashSet<Snake>();
 				for (Actor actor : cell.getActors()) {
 					Snake snake = (Snake)actor;
-					if (snake.getHeadGameCell() == cell) {
+					if (snake.getHeadCell().equals(cell)) {
 						snakeHeads.add(snake);
 					}
-					else {
-						snakeBodies.add(snake);
-					}
 				}
-				
+				// Any snake whose head overlaps another snake should die
+				for (Snake snake : snakeHeads) {
+					snake.die();
+				}
 				
 			}
 		}
-
-		//snake head and obstacle
-		if (actors.containsKey(ActorType.OBSTACLE) && actors.containsKey(ActorType.SNAKE)) {
-			// TODO: Handle collisions of snake head and obstacle
-			for (Actor snakeActor : actors.get(ActorType.SNAKE)) {
-				if(((Snake) snakeActor).getHeadGameCell().equals(cell))
-				{
-					((Snake)snakeActor).setGrowOnNextMove(true);
-				}
-				
+		
+		// Check for bullet and food overlap
+		if (actors.containsKey(ActorType.BULLET) && actors.containsKey(ActorType.FOOD)) {
+			// There should only be one food item, but loop in case there is not
+			for (Actor foodActor : cell.getActors()) {
+				cell.removeActor(foodActor);
 			}
-		}	
+		}
+		
+		
+		// Bullets and snakes
+		
+		// Bullets and bullets
 		
 		return cell;
 	}
